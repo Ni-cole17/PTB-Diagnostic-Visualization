@@ -10,6 +10,18 @@ This repository aims to enhance the visualization of recurrence plots from the P
 
     pip install -r requirements.txt
 
+### Download/Unzip data
+
+Before run data_app.py you need to go download the data and go to data folder and unzip ptb-diagnostic-ecg-database-1.0.0.zip directly on data folder.
+Link to download the data: [https://physionet.org/content/ptbdb/1.0.0/](https://physionet.org/static/published-projects/ptbdb/ptb-diagnostic-ecg-database-1.0.0.zip)
+After unzip data folder will be:
+
+data/ptb-diagnostic-ecg-database-1.0.0/patient001
+
+data/ptb-diagnostic-ecg-database-1.0.0/patient002
+
+data/ptb-diagnostic-ecg-database-1.0.0/...
+
 ### Run data_app.py
 
     bokeh serve --show data_app.py
