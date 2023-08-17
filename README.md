@@ -12,7 +12,7 @@ This repository aims to enhance the visualization of recurrence plots from the P
 
 ### Download/Unzip data
 
-Before run data_app.py you need to download the data and go to data folder and unzip ptb-diagnostic-ecg-database-1.0.0.zip directly on data folder.
+Before run data_app.py you need to download the data, go to data folder and unzip ptb-diagnostic-ecg-database-1.0.0.zip directly on data folder.
 Link to download the data: [https://physionet.org/content/ptbdb/1.0.0/](https://physionet.org/static/published-projects/ptbdb/ptb-diagnostic-ecg-database-1.0.0.zip)
 After unzip data folder will be:
 
