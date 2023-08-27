@@ -10,8 +10,9 @@ import matplotlib.pyplot as plt
 from bokeh.plotting import figure, show, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
 from bokeh.transform import factor_cmap, linear_cmap
-from bokeh.models import ColumnDataSource, DataRange1d,RadioButtonGroup,Slider, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
+from bokeh.models import ColumnDataSource, DataRange1d,RadioButtonGroup,Slider,Line, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
 from bokeh.layouts import gridplot, column
+from bokeh import events
 from functools import partial
 
 
@@ -35,6 +36,14 @@ def update_spinner_end(attrname, old, new):
         spinner_end.high = spinner_start.value + 1500
     else: 
         spinner_end.value = spinner_start.high
+
+
+def callback(event):
+    if event.x and event.y:
+        x_value = event.y 
+        y_value = event.x  # Invert y due to plot coordinate system
+        print(f"Image value: {matrix[int(x_value), int(y_value)]}")
+        
 
 def update_patient(attrname, old, new):
     selected_patology = dropdown_patology.value
@@ -95,7 +104,9 @@ def generate_matrix_thresh(attrname, old, new):
 
 
 ## MAIN
+
 global signals_t
+
 ## Reading info data
 df = pd.read_csv('data/Record_info.csv')
 with open('data/patient_heas.json') as json_file:
@@ -106,7 +117,11 @@ signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"
 signals = signals_t[0:1500]
 signal_channel = signals[:, 1]
 matrix = make_matrix(signals)
-matrix = np.flipud(matrix)  
+matrix = np.flipud(matrix) 
+
+# Save matrix in a raw file
+file_path = "matrix_data2.raw"
+np.save(file_path, matrix)
 
 # Creating Widgets for app
 ## Dropdown patology
@@ -152,6 +167,7 @@ spinner_channel.on_change('value', generate_matrix)
 thresh_value.on_change('value', generate_matrix_thresh)
 switch.on_change('active', generate_matrix_thresh)
 
+
 # Chosing a random signal to initiate the app
 ## Create a Bokeh ColumnDataSource with the initial signal data
 source = ColumnDataSource(data=dict(x=np.arange(len(signal_channel)), y=signal_channel))
@@ -167,7 +183,7 @@ p4 = figure(title="1500x1500 Plot", width=600, height=600, x_range=(0, 1500), y_
 p1.scatter([1], [1], size=10, color='blue')
 p2.line(np.arange(len(signal_channel)), signal_channel)
 p3.line(signal_channel, np.arange(len(signal_channel)))
-p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500, palette="Turbo256")
+p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500,palette="Turbo256")
 
 ## plots configs
 p3.y_range.flipped = True
@@ -180,6 +196,7 @@ p2.add_tools(crosshair)
 p3.add_tools(crosshair)
 p4.add_tools(crosshair)
 
+p4.on_event(events.Tap, callback)
 ## Making a grid
 grid = gridplot([[p1, p2], [p3, p4]])
 
