@@ -5,6 +5,7 @@ from matplotlib.pyplot import figure
 from wfdb import processing
 from numpy.linalg import norm
 import json
+import pickle
 
 import matplotlib.pyplot as plt
 from bokeh.plotting import figure, show, curdoc
@@ -39,10 +40,19 @@ def update_spinner_end(attrname, old, new):
 
 
 def callback(event):
+    global matrix1
     if event.x and event.y:
         x_value = event.y 
         y_value = event.x  # Invert y due to plot coordinate system
-        print(f"Image value: {matrix[int(x_value), int(y_value)]}")
+
+        p11_line = p11.renderers[0] 
+        p11_line.data_source.data = dict(x=matrix1[:, int(y_value)],y=range(0,1500))
+
+        p1_line = p1.renderers[0] 
+        p1_line.data_source.data = dict(x=range(0,1500),y=matrix1[int(x_value),:])
+
+        #print(f"Image value: {matrix1[int(x_value), int(y_value)]}")
+        #print(f"value: {int(x_value)} {x_value} {int(y_value)} {y_value}")
         
 
 def update_patient(attrname, old, new):
@@ -61,11 +71,11 @@ def update_signal(attrname, old, new):
     global len_signal
     selected_signal = dropdown_exam.value
     if spinner_start.value == spinner_end.value:
-        signals_t = np.zeros((15000,15))
+        signals_t = np.zeros((1500,15))
     elif selected_signal != "None":
         signals_t,_ = read_signal(dropdown_pat.value,selected_signal.replace(".hea",""))
     else:
-        signals_t = np.zeros((15000,15))
+        signals_t = np.zeros((1500,15))
     len_signal = signals_t.shape[0]
     spinner_start.value = 0
     spinner_start.high = len_signal
@@ -73,11 +83,12 @@ def update_signal(attrname, old, new):
 def generate_matrix(attrname, old, new):
     global signals_t
     global matrix
+    global matrix1
     signals = signals_t[spinner_start.value:spinner_end.value]
     signal_channel = signals[:, spinner_channel.value]
     source.data = dict(x=np.arange(len(signal_channel)), y=signal_channel)
-    matrix = make_matrix(signals)
-    matrix = np.flipud(matrix)
+    matrix1 = make_matrix(signals)
+    matrix = np.flipud(matrix1)
     if spinner_end.value - spinner_start.value == 1500 or spinner_end.value - spinner_start.value == 0: 
         p4.title.text = f"{dropdown_pat.value} | {dropdown_patology.value} | {dropdown_exam.value} | Channel: {spinner_channel.value} | Start: {spinner_start.value} | End: {spinner_end.value}"
         if spinner_end.value - spinner_start.value == 0:
@@ -93,6 +104,7 @@ def generate_matrix(attrname, old, new):
 
 def generate_matrix_thresh(attrname, old, new):
     global matrix
+    global matrix1
     if switch.active == 1:
         mask = matrix < thresh_value.value
         mask = (~mask*255).astype(np.uint8)
@@ -115,13 +127,15 @@ with open('data/patient_heas.json') as json_file:
 ## Reading the signal and creating recurrence plot
 signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"][0].replace(".hea",""))
 signals = signals_t[0:1500]
-signal_channel = signals[:, 1]
-matrix = make_matrix(signals)
-matrix = np.flipud(matrix) 
+signal_channel = signals[:, 0]
+matrix1 = make_matrix(signals)
+matrix = np.flipud(matrix1) 
 
 # Save matrix in a raw file
-file_path = "matrix_data2.raw"
-np.save(file_path, matrix)
+file_path = "matrix_data3.pkl"
+output = open(file_path, 'wb')
+pickle.dump(matrix1, output)
+output.close()
 
 # Creating Widgets for app
 ## Dropdown patology
@@ -148,6 +162,9 @@ thresh_value = Spinner(title="Choose threshold value for recurrence plot",low=0,
 LABELS = ["UTRP", "TRP"]
 switch = RadioButtonGroup(labels=LABELS, active=0)
 
+LABELS2 = ["12d", "3d","PCA"]
+switch2 = RadioButtonGroup(labels=LABELS2, active=0)
+
 ## Crosshair
 crosshair = CrosshairTool(dimensions='both') 
 
@@ -167,20 +184,21 @@ spinner_channel.on_change('value', generate_matrix)
 thresh_value.on_change('value', generate_matrix_thresh)
 switch.on_change('active', generate_matrix_thresh)
 
-
 # Chosing a random signal to initiate the app
 ## Create a Bokeh ColumnDataSource with the initial signal data
 source = ColumnDataSource(data=dict(x=np.arange(len(signal_channel)), y=signal_channel))
 y_range = DataRange1d(start=0, end=len(signal_channel)-1)
 
 ## Create figures for each object
-p1 = figure(title="1x1 Plot", width=300, height=300)
-p2 = figure(title="1x1500 Plot", width=600, height=300)
-p3 = figure(title="1500x1 Plot", width=300, height=600)
-p4 = figure(title="1500x1500 Plot", width=600, height=600, x_range=(0, 1500), y_range=(1500,0)) 
+p1 = figure(title="Distances plot horizontal",width=800, height=400)
+p11 = figure(title="Distances plot vertical",width=400, height=800)
+p2 = figure(title="1x1500 Plot", width=800, height=300)
+p3 = figure(title="1500x1 Plot", width=300, height=800)
+p4 = figure(title="1500x1500 Plot", width=800, height=800, x_range=(0, 1500), y_range=(1500,0)) 
 
 ## Defining figure type for each plot
-p1.scatter([1], [1], size=10, color='blue')
+p1.line(range(0,1500), np.zeros(1500), line_width=2)
+p11.line(np.zeros(1500),range(0,1500), line_width=2)
 p2.line(np.arange(len(signal_channel)), signal_channel)
 p3.line(signal_channel, np.arange(len(signal_channel)))
 p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500,palette="Turbo256")
@@ -188,19 +206,26 @@ p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500,palette="Turbo256")
 ## plots configs
 p3.y_range.flipped = True
 p3.x_range.flipped = True
+p11.y_range.flipped = True
+p11.x_range.flipped = True
 #p3.y_range = DataRange1d(start=0, end=len(signal_channel)-1)  # Set the start value to 0 
 p2.x_range = p4.x_range
 p3.y_range = p4.y_range
 
+p11.y_range = p4.y_range
+p1.x_range = p4.x_range
+
 p2.add_tools(crosshair)
 p3.add_tools(crosshair)
 p4.add_tools(crosshair)
+p11.add_tools(crosshair)
+p1.add_tools(crosshair)
 
 p4.on_event(events.Tap, callback)
 ## Making a grid
-grid = gridplot([[p1, p2], [p3, p4]])
+grid = gridplot([[None, p2], [p3, p4, p11],[None,p1]])
 
 ## Adding to document
-curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,spinner_end,switch,thresh_value,grid))
+curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,spinner_end,switch,switch2,thresh_value,grid))
 
-##To run the app use the command: bokeh serve --show repo/data_app_test.py
+##To run the app use the command: bokeh serve --show data_app.py
