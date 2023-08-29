@@ -7,6 +7,8 @@ from numpy.linalg import norm
 import json
 import pickle
 
+from sklearn.decomposition import PCA
+
 import matplotlib.pyplot as plt
 from bokeh.plotting import figure, show, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
@@ -18,6 +20,18 @@ from functools import partial
 
 
 def make_matrix(signal):
+    if switch2.active == 0:
+        signal = signal[:,:12]
+    elif switch2.active == 1:
+        signal = signal[:,12:]
+    elif switch2.active == 2:
+        sig = signal[:,:12]
+        pca = PCA(n_components=12)
+        pca.fit(sig)
+        somatorio = np.cumsum(pca.explained_variance_ratio_)
+        num_channels = np.argmax(somatorio > 0.94)
+        signal = signal[:,:num_channels]
+
     diffs = signal[:, np.newaxis, :] - signal[np.newaxis, :, :]
     dists = norm(diffs, axis=2)
     l = None
@@ -84,6 +98,7 @@ def generate_matrix(attrname, old, new):
     global signals_t
     global matrix
     global matrix1
+
     signals = signals_t[spinner_start.value:spinner_end.value]
     signal_channel = signals[:, spinner_channel.value]
     source.data = dict(x=np.arange(len(signal_channel)), y=signal_channel)
@@ -101,6 +116,8 @@ def generate_matrix(attrname, old, new):
 
         p3_line = p3.renderers[0] 
         p3_line.data_source.data = dict(x=signal_channel, y=np.arange(len(signal_channel)))
+
+        switch.active = 0
 
 def generate_matrix_thresh(attrname, old, new):
     global matrix
@@ -123,6 +140,13 @@ global signals_t
 df = pd.read_csv('data/Record_info.csv')
 with open('data/patient_heas.json') as json_file:
     data = json.load(json_file)
+
+## Switch
+LABELS = ["UTRP", "TRP"]
+switch = RadioButtonGroup(labels=LABELS, active=0)
+
+LABELS2 = ["12d", "3d","PCA"]
+switch2 = RadioButtonGroup(labels=LABELS2, active=0)
 
 ## Reading the signal and creating recurrence plot
 signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"][0].replace(".hea",""))
@@ -158,13 +182,6 @@ spinner_end = Spinner(title="Signal end:", low=0, high=signals_t.shape[0], step=
 spinner_channel = Spinner(title="Signal channel:", low=0, high=signals_t.shape[1]-1, step=1, value=0)
 thresh_value = Spinner(title="Choose threshold value for recurrence plot",low=0, high=1, step=0.01, value = 0.3)
 
-## Switch
-LABELS = ["UTRP", "TRP"]
-switch = RadioButtonGroup(labels=LABELS, active=0)
-
-LABELS2 = ["12d", "3d","PCA"]
-switch2 = RadioButtonGroup(labels=LABELS2, active=0)
-
 ## Crosshair
 crosshair = CrosshairTool(dimensions='both') 
 
@@ -182,7 +199,9 @@ spinner_end.on_change('value', generate_matrix)
 spinner_channel.on_change('value', generate_matrix)
 
 thresh_value.on_change('value', generate_matrix_thresh)
+
 switch.on_change('active', generate_matrix_thresh)
+switch2.on_change('active', generate_matrix)
 
 # Chosing a random signal to initiate the app
 ## Create a Bokeh ColumnDataSource with the initial signal data
