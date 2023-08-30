@@ -13,12 +13,14 @@ import matplotlib.pyplot as plt
 from bokeh.plotting import figure, show, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
 from bokeh.transform import factor_cmap, linear_cmap
-from bokeh.models import ColumnDataSource, DataRange1d,RadioButtonGroup,Slider,Line, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
+from bokeh.models import ColumnDataSource, DataRange1d,RadioButtonGroup,Slider,Line,Range1d, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
 from bokeh.layouts import gridplot, column
 from bokeh import events
 from functools import partial
+from bokeh.events import MouseWheel,RangesUpdate
 
 
+## Functions
 def make_matrix(signal):
     if switch2.active == 0:
         signal = signal[:,:12]
@@ -45,6 +47,25 @@ def read_signal(patient, hea, n_channels = 15):
     return signal, fields
 
 ## Callbacks
+def generate_hist(event):
+    global matrix1
+    x_range, y_range = p4.x_range, p4.y_range
+    xmin, xmax = x_range.start, x_range.end
+    ymax, ymin = y_range.start, y_range.end
+    
+    xmin = max(0, int(xmin))
+    xmax = min(1500, int(xmax))
+    ymin = max(0, int(ymin))   
+    ymax = min(1500, int(ymax))
+    
+    # Update the histogram data based on the current image view
+    rounded_signal = np.round(matrix1,3)
+    rounded_signal = rounded_signal[int(ymin):int(ymax), int(xmin):int(xmax)]
+    hist_values, hist_bins = np.histogram(rounded_signal,bins=6200)
+
+    hist = p5.renderers[0] 
+    hist.data_source.data = dict(top=hist_values, bottom=[0] * len(hist_values), left=hist_bins[:-1], right= hist_bins[1:])
+
 def update_spinner_end(attrname, old, new):
     if spinner_start.value + 1500 <= spinner_start.high:
         spinner_end.value = spinner_start.value + 1500
@@ -154,6 +175,8 @@ signals = signals_t[0:1500]
 signal_channel = signals[:, 0]
 matrix1 = make_matrix(signals)
 matrix = np.flipud(matrix1) 
+rounded_signal = np.round(matrix,3)
+hist_values, hist_bins = np.histogram(rounded_signal,bins=6200)
 
 # Save matrix in a raw file
 file_path = "matrix_data3.pkl"
@@ -205,15 +228,18 @@ switch2.on_change('active', generate_matrix)
 
 # Chosing a random signal to initiate the app
 ## Create a Bokeh ColumnDataSource with the initial signal data
+hist_source = ColumnDataSource(data=dict(top=[], bins=[]))
 source = ColumnDataSource(data=dict(x=np.arange(len(signal_channel)), y=signal_channel))
 y_range = DataRange1d(start=0, end=len(signal_channel)-1)
 
+tools = ["pan","wheel_zoom","box_zoom","reset","save","help"]
 ## Create figures for each object
-p1 = figure(title="Distances plot horizontal",width=800, height=400)
-p11 = figure(title="Distances plot vertical",width=400, height=800)
-p2 = figure(title="1x1500 Plot", width=800, height=300)
-p3 = figure(title="1500x1 Plot", width=300, height=800)
-p4 = figure(title="1500x1500 Plot", width=800, height=800, x_range=(0, 1500), y_range=(1500,0)) 
+p1 = figure(title="Distances plot horizontal",width=800, height=400,tools=tools)
+p11 = figure(title="Distances plot vertical",width=400, height=800,tools=tools)
+p2 = figure(title="1x1500 Plot", width=800, height=300,tools=tools)
+p3 = figure(title="1500x1 Plot", width=300, height=800,tools=tools)
+p4 = figure(title="1500x1500 Plot", width=800, height=800, x_range=(0, 1500), y_range=(1500,0),tools=tools) 
+p5 = figure(title="Histograma da imagem",width=800, height=300,tools=tools)
 
 ## Defining figure type for each plot
 p1.line(range(0,1500), np.zeros(1500), line_width=2)
@@ -221,13 +247,13 @@ p11.line(np.zeros(1500),range(0,1500), line_width=2)
 p2.line(np.arange(len(signal_channel)), signal_channel)
 p3.line(signal_channel, np.arange(len(signal_channel)))
 p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500,palette="Turbo256")
+p5.quad(top=hist_values, bottom=0, left=hist_bins[:-1], right=hist_bins[1:], fill_color="navy", line_color="navy")
 
 ## plots configs
 p3.y_range.flipped = True
 p3.x_range.flipped = True
 p11.y_range.flipped = True
 p11.x_range.flipped = True
-#p3.y_range = DataRange1d(start=0, end=len(signal_channel)-1)  # Set the start value to 0 
 p2.x_range = p4.x_range
 p3.y_range = p4.y_range
 
@@ -241,8 +267,10 @@ p11.add_tools(crosshair)
 p1.add_tools(crosshair)
 
 p4.on_event(events.Tap, callback)
+p4.on_event(RangesUpdate, generate_hist)
+##p4.on_event(Pan, generate_hist)
 ## Making a grid
-grid = gridplot([[None, p2], [p3, p4, p11],[None,p1]])
+grid = gridplot([[None, p2,p5], [p3, p4, p11],[None,p1]])
 
 ## Adding to document
 curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,spinner_end,switch,switch2,thresh_value,grid))
