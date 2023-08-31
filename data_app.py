@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from bokeh.plotting import figure, show, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
 from bokeh.transform import factor_cmap, linear_cmap
-from bokeh.models import ColumnDataSource, DataRange1d,RadioButtonGroup,Slider,Line,Range1d, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
+from bokeh.models import ColumnDataSource, Paragraph, DataRange1d,RadioButtonGroup,Slider,Line,Range1d, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
 from bokeh.layouts import gridplot, column
 from bokeh import events
 from functools import partial
@@ -46,7 +46,7 @@ def read_signal(patient, hea, n_channels = 15):
     signal, fields = wfdb.rdsamp(f'data/ptb-diagnostic-ecg-database-1.0.0/{patient}/{hea}', channels=[*range(n_channels)])
     return signal, fields
 
-## Callbacks
+
 def generate_hist(event):
     global matrix1
     x_range, y_range = p4.x_range, p4.y_range
@@ -125,6 +125,7 @@ def generate_matrix(attrname, old, new):
     source.data = dict(x=np.arange(len(signal_channel)), y=signal_channel)
     matrix1 = make_matrix(signals)
     matrix = np.flipud(matrix1)
+    hover_tool.callback = CustomJS(code=hover_code, args={'matrix1': matrix1})
     if spinner_end.value - spinner_start.value == 1500 or spinner_end.value - spinner_start.value == 0: 
         p4.title.text = f"{dropdown_pat.value} | {dropdown_patology.value} | {dropdown_exam.value} | Channel: {spinner_channel.value} | Start: {spinner_start.value} | End: {spinner_end.value}"
         if spinner_end.value - spinner_start.value == 0:
@@ -156,6 +157,7 @@ def generate_matrix_thresh(attrname, old, new):
 ## MAIN
 
 global signals_t
+global matrix1
 
 ## Reading info data
 df = pd.read_csv('data/Record_info.csv')
@@ -168,6 +170,14 @@ switch = RadioButtonGroup(labels=LABELS, active=0)
 
 LABELS2 = ["12d", "3d","PCA"]
 switch2 = RadioButtonGroup(labels=LABELS2, active=0)
+
+## Hover tool
+hover_code = """
+    const geometry = cb_data.geometry;
+    const x = geometry.x;
+    const y = geometry.y;
+"""
+hover_tool = HoverTool(tooltips=[("Value", "@image"),("(x,y)", "($x, $y)")],callback=CustomJS(args={'matrix1': matrix1}, code=hover_code))
 
 ## Reading the signal and creating recurrence plot
 signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"][0].replace(".hea",""))
@@ -233,6 +243,7 @@ source = ColumnDataSource(data=dict(x=np.arange(len(signal_channel)), y=signal_c
 y_range = DataRange1d(start=0, end=len(signal_channel)-1)
 
 tools = ["pan","wheel_zoom","box_zoom","reset","save","help"]
+
 ## Create figures for each object
 p1 = figure(title="Distances plot horizontal",width=800, height=400,tools=tools)
 p11 = figure(title="Distances plot vertical",width=400, height=800,tools=tools)
@@ -240,6 +251,8 @@ p2 = figure(title="1x1500 Plot", width=800, height=300,tools=tools)
 p3 = figure(title="1500x1 Plot", width=300, height=800,tools=tools)
 p4 = figure(title="1500x1500 Plot", width=800, height=800, x_range=(0, 1500), y_range=(1500,0),tools=tools) 
 p5 = figure(title="Histograma da imagem",width=800, height=300,tools=tools)
+## Mudanças futuras: Max e min da imagem, localização, e quantiles
+##p = Paragraph(text=f"""Valor visualizado""",width=200, height=100)
 
 ## Defining figure type for each plot
 p1.line(range(0,1500), np.zeros(1500), line_width=2)
@@ -268,9 +281,11 @@ p1.add_tools(crosshair)
 
 p4.on_event(events.Tap, callback)
 p4.on_event(RangesUpdate, generate_hist)
+
+p4.add_tools(hover_tool)
 ##p4.on_event(Pan, generate_hist)
 ## Making a grid
-grid = gridplot([[None, p2,p5], [p3, p4, p11],[None,p1]])
+grid = gridplot([[p, p2,p5], [p3, p4, p11],[None,p1]])
 
 ## Adding to document
 curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,spinner_end,switch,switch2,thresh_value,grid))
