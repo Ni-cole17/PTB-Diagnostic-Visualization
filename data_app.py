@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from bokeh.plotting import figure, show, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
 from bokeh.transform import factor_cmap, linear_cmap
-from bokeh.models import ColumnDataSource, Paragraph, DataRange1d,RadioButtonGroup,Slider,Line,Range1d, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
+from bokeh.models import ColumnDataSource, PreText, LegendItem, DataRange1d,RadioButtonGroup,Slider,Line,Range1d, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
 from bokeh.layouts import gridplot, column
 from bokeh import events
 from functools import partial
@@ -48,6 +48,7 @@ def read_signal(patient, hea, n_channels = 15):
 
 
 def generate_hist(event):
+    global quantile_vbars
     global matrix1
     x_range, y_range = p4.x_range, p4.y_range
     xmin, xmax = x_range.start, x_range.end
@@ -61,10 +62,27 @@ def generate_hist(event):
     # Update the histogram data based on the current image view
     rounded_signal = np.round(matrix1,3)
     rounded_signal = rounded_signal[int(ymin):int(ymax), int(xmin):int(xmax)]
+
+    ## Update Metrics
+    quants = [0.1, 0.25, 0.5, 0.75, 0.9]
+    max_value = np.max(rounded_signal)
+    min_value = np.min(rounded_signal) 
+    quantiles = np.quantile(rounded_signal, quants)
+    p.text =f"Valor max: {max_value:.2f}\nValor min: {min_value:.2f}\n\
+10%:{quantiles[0]:.2f}\n25%: {quantiles[1]:.2f}\n50%: {quantiles[2]:.2f}\n\
+75%:{quantiles[3]:.2f}\n90%: {quantiles[4]:.2f}"
+
     hist_values, hist_bins = np.histogram(rounded_signal,bins=6200)
+
+    for i, barv in enumerate(quantile_vbars):
+        barv.glyph.x = quantiles[i]
+        barv.glyph.top = max(hist_values)
+        new_label = f"Quantile {quants[i]*100}%: {quantiles[i]:.2f}"
+        p5.legend[0].items[i] = (LegendItem(label=new_label, renderers=[barv]))
 
     hist = p5.renderers[0] 
     hist.data_source.data = dict(top=hist_values, bottom=[0] * len(hist_values), left=hist_bins[:-1], right= hist_bins[1:])
+
 
 def update_spinner_end(attrname, old, new):
     if spinner_start.value + 1500 <= spinner_start.high:
@@ -85,10 +103,6 @@ def callback(event):
 
         p1_line = p1.renderers[0] 
         p1_line.data_source.data = dict(x=range(0,1500),y=matrix1[int(x_value),:])
-
-        #print(f"Image value: {matrix1[int(x_value), int(y_value)]}")
-        #print(f"value: {int(x_value)} {x_value} {int(y_value)} {y_value}")
-        
 
 def update_patient(attrname, old, new):
     selected_patology = dropdown_patology.value
@@ -140,6 +154,7 @@ def generate_matrix(attrname, old, new):
         p3_line.data_source.data = dict(x=signal_channel, y=np.arange(len(signal_channel)))
 
         switch.active = 0
+        generate_hist(event=None)
 
 def generate_matrix_thresh(attrname, old, new):
     global matrix
@@ -158,6 +173,7 @@ def generate_matrix_thresh(attrname, old, new):
 
 global signals_t
 global matrix1
+global quantile_vbars
 
 ## Reading info data
 df = pd.read_csv('data/Record_info.csv')
@@ -171,14 +187,6 @@ switch = RadioButtonGroup(labels=LABELS, active=0)
 LABELS2 = ["12d", "3d","PCA"]
 switch2 = RadioButtonGroup(labels=LABELS2, active=0)
 
-## Hover tool
-hover_code = """
-    const geometry = cb_data.geometry;
-    const x = geometry.x;
-    const y = geometry.y;
-"""
-hover_tool = HoverTool(tooltips=[("Value", "@image"),("(x,y)", "($x, $y)")],callback=CustomJS(args={'matrix1': matrix1}, code=hover_code))
-
 ## Reading the signal and creating recurrence plot
 signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"][0].replace(".hea",""))
 signals = signals_t[0:1500]
@@ -187,14 +195,26 @@ matrix1 = make_matrix(signals)
 matrix = np.flipud(matrix1) 
 rounded_signal = np.round(matrix,3)
 hist_values, hist_bins = np.histogram(rounded_signal,bins=6200)
+max_value = np.max(matrix1)
+min_value = np.min(matrix1)
+quantiles = np.quantile(matrix1, [0.1, 0.25, 0.5, 0.75, 0.9])
 
 # Save matrix in a raw file
-file_path = "matrix_data3.pkl"
+file_path = "matrix_data.pkl"
 output = open(file_path, 'wb')
 pickle.dump(matrix1, output)
 output.close()
 
 # Creating Widgets for app
+
+## Hover tool
+hover_code = """
+    const geometry = cb_data.geometry;
+    const x = geometry.x;
+    const y = geometry.y;
+"""
+hover_tool = HoverTool(tooltips=[("Value", "@image"),("(x,y)", "($x, $y)")],callback=CustomJS(args={'matrix1': matrix1}, code=hover_code))
+
 ## Dropdown patology
 valid_options_patology = pd.notna(df['Reason for admission'])
 dropdown_patology = Select(title="Select Patology", value="All", options=["All"] + list(df.loc[valid_options_patology, 'Reason for admission'].unique()))
@@ -252,7 +272,9 @@ p3 = figure(title="1500x1 Plot", width=300, height=800,tools=tools)
 p4 = figure(title="1500x1500 Plot", width=800, height=800, x_range=(0, 1500), y_range=(1500,0),tools=tools) 
 p5 = figure(title="Histograma da imagem",width=800, height=300,tools=tools)
 ## Mudanças futuras: Max e min da imagem, localização, e quantiles
-##p = Paragraph(text=f"""Valor visualizado""",width=200, height=100)
+p = PreText(text=f"Valor max: {max_value:.2f}\nValor min: {min_value:.2f}\n\
+10%:{quantiles[0]:.2f}\n25%: {quantiles[1]:.2f}\n50%: {quantiles[2]:.2f}\n\
+75%:{quantiles[3]:.2f}\n90%: {quantiles[4]:.2f}",width=200, height=100)
 
 ## Defining figure type for each plot
 p1.line(range(0,1500), np.zeros(1500), line_width=2)
@@ -261,6 +283,7 @@ p2.line(np.arange(len(signal_channel)), signal_channel)
 p3.line(signal_channel, np.arange(len(signal_channel)))
 p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500,palette="Turbo256")
 p5.quad(top=hist_values, bottom=0, left=hist_bins[:-1], right=hist_bins[1:], fill_color="navy", line_color="navy")
+quantile_vbars = [p5.vbar(x=quantiles[i], top=max(hist_values), width=0.01, color="red", legend_label=f"Quantile {q*100}%: {quantiles[i]:.2f}") for i, q in enumerate([0.1, 0.25, 0.5, 0.75, 0.9])]
 
 ## plots configs
 p3.y_range.flipped = True
@@ -285,7 +308,7 @@ p4.on_event(RangesUpdate, generate_hist)
 p4.add_tools(hover_tool)
 ##p4.on_event(Pan, generate_hist)
 ## Making a grid
-grid = gridplot([[p, p2,p5], [p3, p4, p11],[None,p1]])
+grid = gridplot([[p,p2,p5], [p3, p4, p11],[None,p1]])
 
 ## Adding to document
 curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,spinner_end,switch,switch2,thresh_value,grid))
