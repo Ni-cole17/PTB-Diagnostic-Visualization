@@ -18,9 +18,28 @@ from bokeh.layouts import gridplot, column
 from bokeh import events
 from functools import partial
 from bokeh.events import MouseWheel,RangesUpdate
-
+from scipy import signal
 
 ## Functions
+def filt_bandpass(sig,fs):
+    '''
+    Filtro Butterworth passa banda, ordem 3. Frequência de corte 1hz e 50hz.
+    :param sig: sinal a ser filtrado
+    :param fs: frequência de amostragem do sinal.
+    :return sig_filt: sinal filtrado.
+    '''
+    
+    nyq = 0.5*fs # frequência de Nyquist
+    ordem = 3 # ordem do filtro
+    fh = 50
+    fl = 1
+    high = fh/nyq
+    low = fl/nyq
+    b, a = signal.butter(ordem, [low, high], btype='band')
+    sig_filt = signal.filtfilt(b, a, sig, axis = 0)
+        
+    return sig_filt
+
 def make_matrix(signal):
     if switch2.active == 0:
         signal = signal[:,:12]
@@ -119,10 +138,13 @@ def update_signal(attrname, old, new):
     global signals_t
     global len_signal
     selected_signal = dropdown_exam.value
+    filtered = switch3.active
     if spinner_start.value == spinner_end.value:
         signals_t = np.zeros((1500,15))
     elif selected_signal != "None":
         signals_t,_ = read_signal(dropdown_pat.value,selected_signal.replace(".hea",""))
+        if filtered == 1:
+            signals_t = filt_bandpass(signals_t,1000)
     else:
         signals_t = np.zeros((1500,15))
     len_signal = signals_t.shape[0]
@@ -160,7 +182,7 @@ def generate_matrix_thresh(attrname, old, new):
     global matrix
     global matrix1
     if switch.active == 1:
-        mask = matrix < thresh_value.value
+        mask = (matrix < thresh_value_up.value) & (matrix > thresh_value_down.value)
         mask = (~mask*255).astype(np.uint8)
 
         p4.title.text = f"{dropdown_pat.value} | {dropdown_patology.value} | {dropdown_exam.value} | Channel: {spinner_channel.value} | Start: {spinner_start.value} | End: {spinner_end.value}"
@@ -187,7 +209,11 @@ switch = RadioButtonGroup(labels=LABELS, active=0)
 LABELS2 = ["12d", "3d","PCA"]
 switch2 = RadioButtonGroup(labels=LABELS2, active=0)
 
+LABELS3 = ["Sem filtro","Filtro passa banda"]
+switch3 = RadioButtonGroup(labels=LABELS3, active=0)
+ 
 ## Reading the signal and creating recurrence plot
+fs = 1000
 signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"][0].replace(".hea",""))
 signals = signals_t[0:1500]
 signal_channel = signals[:, 0]
@@ -226,15 +252,13 @@ selected_patient = dropdown_pat.value
 ## Dropdown exam
 dropdown_exam = Select(title="Select Exam", value=data[selected_patient]["heas"][0], options=data[selected_patient]["heas"])
 
-## Slider
-thresh_value = Slider(start=0, end=1, value=0.1, step=0.01, title="Choose threshold value for recurrence plot")
 
 ## Spinner
 spinner_start = Spinner(title="Signal start:", low=0, high=signals_t.shape[0], step=1, value=0)
 spinner_end = Spinner(title="Signal end:", low=0, high=signals_t.shape[0], step=1, value=1500)
 spinner_channel = Spinner(title="Signal channel:", low=0, high=signals_t.shape[1]-1, step=1, value=0)
-thresh_value = Spinner(title="Choose threshold value for recurrence plot",low=0, high=1, step=0.01, value = 0.3)
-
+thresh_value_down = Spinner(title="Choose threshold down value for recurrence plot",low=-1, high=20, step=0.01, value = -1)
+thresh_value_up = Spinner(title="Choose threshold up value for recurrence plot",low=0, high=20, step=0.01, value = 0.3)
 ## Crosshair
 crosshair = CrosshairTool(dimensions='both') 
 
@@ -251,10 +275,13 @@ spinner_start.on_change('value', generate_matrix)
 spinner_end.on_change('value', generate_matrix)
 spinner_channel.on_change('value', generate_matrix)
 
-thresh_value.on_change('value', generate_matrix_thresh)
+thresh_value_up.on_change('value', generate_matrix_thresh)
+thresh_value_down.on_change('value', generate_matrix_thresh)
 
 switch.on_change('active', generate_matrix_thresh)
 switch2.on_change('active', generate_matrix)
+switch3.on_change('active', update_signal)
+switch3.on_change('active', generate_matrix)
 
 # Chosing a random signal to initiate the app
 ## Create a Bokeh ColumnDataSource with the initial signal data
@@ -311,6 +338,8 @@ p4.add_tools(hover_tool)
 grid = gridplot([[p,p2,p5], [p3, p4, p11],[None,p1]])
 
 ## Adding to document
-curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,spinner_end,switch,switch2,thresh_value,grid))
+curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,spinner_end,switch,switch2,switch3,thresh_value_up,thresh_value_down,grid))
 
+
+## Activate python venv before running the app with powershell: .\venv\Scripts\Activate.ps1
 ##To run the app use the command: bokeh serve --show data_app.py
