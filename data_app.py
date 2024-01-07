@@ -1,24 +1,18 @@
 import wfdb
 import pandas as pd
 import numpy as np
-from matplotlib.pyplot import figure
-from wfdb import processing
 from numpy.linalg import norm
+from scipy import signal
 import json
 import pickle
-
 from sklearn.decomposition import PCA
 
-import matplotlib.pyplot as plt
-from bokeh.plotting import figure, show, curdoc
+from bokeh.plotting import figure, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
-from bokeh.transform import factor_cmap, linear_cmap
-from bokeh.models import ColumnDataSource, PreText, LegendItem, DataRange1d,RadioButtonGroup,Slider,Line,Range1d, Spinner, Select, HoverTool, RangeSlider, CrosshairTool, Span, CustomJS, TextInput
+from bokeh.models import ColumnDataSource, PreText, LegendItem, DataRange1d,RadioButtonGroup, Spinner, Select, HoverTool, CrosshairTool, CustomJS
 from bokeh.layouts import gridplot, column
 from bokeh import events
-from functools import partial
-from bokeh.events import MouseWheel,RangesUpdate
-from scipy import signal
+from bokeh.events import RangesUpdate
 
 ## Functions
 def filt_bandpass(sig,fs):
@@ -74,9 +68,9 @@ def generate_hist(event):
     ymax, ymin = y_range.start, y_range.end
     
     xmin = max(0, int(xmin))
-    xmax = min(1500, int(xmax))
+    xmax = min(2000, int(xmax))
     ymin = max(0, int(ymin))   
-    ymax = min(1500, int(ymax))
+    ymax = min(2000, int(ymax))
     
     # Update the histogram data based on the current image view
     rounded_signal = np.round(matrix1,3)
@@ -104,9 +98,9 @@ def generate_hist(event):
 
 
 def update_spinner_end(attrname, old, new):
-    if spinner_start.value + 1500 <= spinner_start.high:
-        spinner_end.value = spinner_start.value + 1500
-        spinner_end.high = spinner_start.value + 1500
+    if spinner_start.value + 2000 <= spinner_start.high:
+        spinner_end.value = spinner_start.value + 2000
+        spinner_end.high = spinner_start.value + 2000
     else: 
         spinner_end.value = spinner_start.high
 
@@ -118,10 +112,10 @@ def callback(event):
         y_value = event.x  # Invert y due to plot coordinate system
 
         p11_line = p11.renderers[0] 
-        p11_line.data_source.data = dict(x=matrix1[:, int(y_value)],y=range(0,1500))
+        p11_line.data_source.data = dict(x=matrix1[:, int(y_value)],y=range(0,2000))
 
         p1_line = p1.renderers[0] 
-        p1_line.data_source.data = dict(x=range(0,1500),y=matrix1[int(x_value),:])
+        p1_line.data_source.data = dict(x=range(0,2000),y=matrix1[int(x_value),:])
 
 def update_patient(attrname, old, new):
     selected_patology = dropdown_patology.value
@@ -140,13 +134,13 @@ def update_signal(attrname, old, new):
     selected_signal = dropdown_exam.value
     filtered = switch3.active
     if spinner_start.value == spinner_end.value:
-        signals_t = np.zeros((1500,15))
+        signals_t = np.zeros((2000,15))
     elif selected_signal != "None":
         signals_t,_ = read_signal(dropdown_pat.value,selected_signal.replace(".hea",""))
         if filtered == 1:
             signals_t = filt_bandpass(signals_t,1000)
     else:
-        signals_t = np.zeros((1500,15))
+        signals_t = np.zeros((2000,15))
     len_signal = signals_t.shape[0]
     spinner_start.value = 0
     spinner_start.high = len_signal
@@ -162,12 +156,12 @@ def generate_matrix(attrname, old, new):
     matrix1 = make_matrix(signals)
     matrix = np.flipud(matrix1)
     hover_tool.callback = CustomJS(code=hover_code, args={'matrix1': matrix1})
-    if spinner_end.value - spinner_start.value == 1500 or spinner_end.value - spinner_start.value == 0: 
+    if spinner_end.value - spinner_start.value == 2000 or spinner_end.value - spinner_start.value == 0: 
         p4.title.text = f"{dropdown_pat.value} | {dropdown_patology.value} | {dropdown_exam.value} | Channel: {spinner_channel.value} | Start: {spinner_start.value} | End: {spinner_end.value}"
         if spinner_end.value - spinner_start.value == 0:
-            p4.image(image=[np.zeros((1500,1500))], x=0, y=1500, dw=1500, dh=1500, palette="Turbo256")
+            p4.image(image=[np.zeros((2000,2000))], x=0, y=2000, dw=2000, dh=2000, palette="Turbo256")
         else:
-            p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500, palette="Turbo256")
+            p4.image(image=[matrix], x=0, y=2000, dw=2000, dh=2000, palette="Turbo256")
 
         p2_line = p2.renderers[0] 
         p2_line.data_source.data = dict(x=np.arange(len(signal_channel)), y=signal_channel)
@@ -186,9 +180,9 @@ def generate_matrix_thresh(attrname, old, new):
         mask = (~mask*255).astype(np.uint8)
 
         p4.title.text = f"{dropdown_pat.value} | {dropdown_patology.value} | {dropdown_exam.value} | Channel: {spinner_channel.value} | Start: {spinner_start.value} | End: {spinner_end.value}"
-        p4.image(image=[mask], x=0, y=1500, dw=1500, dh=1500, palette="Greys256")
+        p4.image(image=[mask], x=0, y=2000, dw=2000, dh=2000, palette="Greys256")
     else:
-        p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500, palette="Turbo256")
+        p4.image(image=[matrix], x=0, y=2000, dw=2000, dh=2000, palette="Turbo256")
 
 
 ## MAIN
@@ -215,7 +209,7 @@ switch3 = RadioButtonGroup(labels=LABELS3, active=0)
 ## Reading the signal and creating recurrence plot
 fs = 1000
 signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"][0].replace(".hea",""))
-signals = signals_t[0:1500]
+signals = signals_t[0:2000]
 signal_channel = signals[:, 0]
 matrix1 = make_matrix(signals)
 matrix = np.flipud(matrix1) 
@@ -239,26 +233,27 @@ hover_code = """
     const x = geometry.x;
     const y = geometry.y;
 """
+
 hover_tool = HoverTool(tooltips=[("Value", "@image"),("(x,y)", "($x, $y)")],callback=CustomJS(args={'matrix1': matrix1}, code=hover_code))
 
 ## Dropdown patology
 valid_options_patology = pd.notna(df['Reason for admission'])
-dropdown_patology = Select(title="Select Patology", value="All", options=["All"] + list(df.loc[valid_options_patology, 'Reason for admission'].unique()))
+dropdown_patology = Select(title="Selecione a Patologia", value="All", options=["All"] + list(df.loc[valid_options_patology, 'Reason for admission'].unique()))
 
 ## Dropdown patient
-dropdown_pat = Select(title="Select Patient", value=list(df['idP'])[0], options=list(df['idP']))
+dropdown_pat = Select(title="Selecione o Paciente", value=list(df['idP'])[0], options=list(df['idP']))
 selected_patient = dropdown_pat.value
 
 ## Dropdown exam
-dropdown_exam = Select(title="Select Exam", value=data[selected_patient]["heas"][0], options=data[selected_patient]["heas"])
+dropdown_exam = Select(title="Selecione o Exame", value=data[selected_patient]["heas"][0], options=data[selected_patient]["heas"])
 
 
 ## Spinner
-spinner_start = Spinner(title="Signal start:", low=0, high=signals_t.shape[0], step=1, value=0)
-spinner_end = Spinner(title="Signal end:", low=0, high=signals_t.shape[0], step=1, value=1500)
-spinner_channel = Spinner(title="Signal channel:", low=0, high=signals_t.shape[1]-1, step=1, value=0)
-thresh_value_down = Spinner(title="Choose threshold down value for recurrence plot",low=-1, high=20, step=0.01, value = -1)
-thresh_value_up = Spinner(title="Choose threshold up value for recurrence plot",low=0, high=20, step=0.01, value = 0.3)
+spinner_start = Spinner(title="Selecione o ponto de inicio do sinal:", low=0, high=signals_t.shape[0], step=1, value=0)
+spinner_end = Spinner(title="Signal o ponto de término do sinal:", low=0, high=signals_t.shape[0], step=1, value=2000)
+spinner_channel = Spinner(title="Selecione um Canal :", low=0, high=signals_t.shape[1]-1, step=1, value=0)
+thresh_value_down = Spinner(title="Escolha um limiar inferior para o gráfico de recorrência",low=-1, high=20, step=0.01, value = -1)
+thresh_value_up = Spinner(title="Escolha um limiar superior para o gráfico de recorrência",low=0, high=20, step=0.01, value = 0.3)
 ## Crosshair
 crosshair = CrosshairTool(dimensions='both') 
 
@@ -292,11 +287,11 @@ y_range = DataRange1d(start=0, end=len(signal_channel)-1)
 tools = ["pan","wheel_zoom","box_zoom","reset","save","help"]
 
 ## Create figures for each object
-p1 = figure(title="Distances plot horizontal",width=800, height=400,tools=tools)
-p11 = figure(title="Distances plot vertical",width=400, height=800,tools=tools)
-p2 = figure(title="1x1500 Plot", width=800, height=300,tools=tools)
-p3 = figure(title="1500x1 Plot", width=300, height=800,tools=tools)
-p4 = figure(title="1500x1500 Plot", width=800, height=800, x_range=(0, 1500), y_range=(1500,0),tools=tools) 
+p1 = figure(title="Gráfico de distâncias horizontal",width=800, height=400,tools=tools)
+p11 = figure(title="Gráfico de distâncias vertical",width=400, height=800,tools=tools)
+p2 = figure(title="Sinal na horizontal", width=800, height=300,tools=tools)
+p3 = figure(title="Sinal na vertical", width=300, height=800,tools=tools)
+p4 = figure(title="Matriz de distância", width=800, height=800, x_range=(0, 2000), y_range=(2000,0),tools=tools) 
 p5 = figure(title="Histograma da imagem",width=800, height=300,tools=tools)
 ## Mudanças futuras: Max e min da imagem, localização, e quantiles
 p = PreText(text=f"Valor max: {max_value:.2f}\nValor min: {min_value:.2f}\n\
@@ -304,11 +299,11 @@ p = PreText(text=f"Valor max: {max_value:.2f}\nValor min: {min_value:.2f}\n\
 75%:{quantiles[3]:.2f}\n90%: {quantiles[4]:.2f}",width=200, height=100)
 
 ## Defining figure type for each plot
-p1.line(range(0,1500), np.zeros(1500), line_width=2)
-p11.line(np.zeros(1500),range(0,1500), line_width=2)
+p1.line(range(0,2000), np.zeros(2000), line_width=2)
+p11.line(np.zeros(2000),range(0,2000), line_width=2)
 p2.line(np.arange(len(signal_channel)), signal_channel)
 p3.line(signal_channel, np.arange(len(signal_channel)))
-p4.image(image=[matrix], x=0, y=1500, dw=1500, dh=1500,palette="Turbo256")
+p4.image(image=[matrix], x=0, y=2000, dw=2000, dh=2000,palette="Turbo256")
 p5.quad(top=hist_values, bottom=0, left=hist_bins[:-1], right=hist_bins[1:], fill_color="navy", line_color="navy")
 quantile_vbars = [p5.vbar(x=quantiles[i], top=max(hist_values), width=0.01, color="red", legend_label=f"Quantile {q*100}%: {quantiles[i]:.2f}") for i, q in enumerate([0.1, 0.25, 0.5, 0.75, 0.9])]
 

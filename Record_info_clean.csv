@@ -1,0 +1,291 @@
+age,sex,ECG date,Reason for admission,Acute infarction (localization),Former infarction (localization),Additional diagnoses,Smoker,Number of coronary vessels involved,idP,ECG_year
+61,female,1997-06-05,Myocardial infarction,inferior,no,unknown,unknown,unknown,patient294,1997.0
+52,male,1993-01-07,Cardiomyopathy,no,no,"Recurrent pulmonary oedema, Hypertrophic obstructive cardiomyopathy (intraventricular gradient 70-90mmHg), Hyperlipoproteinemia, Diabetes mellitus, Obesity",yes,0,patient137,1993.0
+63,male,1991-05-22,Myocardial infarction,anterior,no,"Arterial Hypertension, Hyperlipidemia, Hyperuricemia",no,unknown,patient128,1991.0
+63,male,1990-10-18,Myocardial infarction,infero-postero-lateral,no,no,yes,1,patient003,1990.0
+61,male,1997-03-06,Myocarditis,no,no,no,unknown,unknown,patient272,1997.0
+81,male,1991-08-30,Dysrhythmia,no,unknown,"Palpitation, Arterial hypertension",yes,3,patient147,1991.0
+37,male,1992-06-16,Healthy control,no,no,no,unknown,unknown,patient155,1992.0
+48,male,1997-05-29,Healthy control,no,no,no,unknown,unknown,patient284,1997.0
+62,male,1991-04-15,Palpitation,no,unknown,"Coronary heart disease, Arterial hypertension",no,1,patient126,1991.0
+35,female,1994-08-23,Healthy control,no,no,no,no,unknown,patient279,1994.0
+37,male,1992-04-07,Healthy control,no,no,no,unknown,unknown,patient117,1992.0
+61,female,1991-09-18,Heart failure (NYHA 4),no,no,"Prosthetic valve in mitral position, Mitral regurgitation (grade 2-3), Pulmonary hypertension, Diabetes mellitus",no,0,patient123,1991.0
+64,male,1992-05-27,Myocardial infarction,antero-septo-lateral,anterior,Coronary artery disease,no,unknown,patient158,1992.0
+64,male,1991-05-08,Myocardial infarction,antero-lateral,no,no,no,2,patient048,1991.0
+59,female,1990-09-25,Myocardial infarction,no,inferior,"WPW, paroxysmal atrial fibrillation",no,unknown,patient193,1990.0
+37,male,1992-11-26,Healthy control,no,no,no,unknown,unknown,patient180,1992.0
+67,male,1997-03-27,Cardiomyopathy,no,no,"Dilated Cardiomyopathy, Recurrent ventricular tachycardias",unknown,unknown,patient288,1997.0
+45,male,1992-05-14,,,,,unknown,,patient186,1992.0
+44,male,1991-04-15,Myocardial infarction,infero-lateral,no,Hyperlipoproteinemia Type IV,no,1,patient045,1991.0
+64,male,1996-02-07,Healthy control,no,no,no,unknown,unknown,patient248,1996.0
+37,male,1991-08-30,Myocardial infarction,antero-septal,no,"Arterial hypertension, Gastritis",yes,1,patient061,1991.0
+47,male,1991-09-12,Myocardial infarction,infero-lateral,no,no,no,1,patient054,1991.0
+60,male,1991-01-24,Myocardial infarction,antero-septal,no,Hypercholesterinemia,no,2,patient033,1991.0
+57,male,1996-02-07,,,,,unknown,,patient285,1996.0
+60,male,1997-05-29,Myocardial infarction,antero-septal,inferior,unknown,unknown,unknown,patient290,1997.0
+55,male,1992-07-29,Myocardial infarction,antero-septal,antero-lateral,Hypercholesterinemia,yes,0,patient084,1992.0
+55,male,1997-03-04,Myocardial infarction,infero-lateral,anterior,unknown,unknown,unknown,patient268,1997.0
+49,male,1991-01-07,Myocardial infarction,anterior,no,"Hypercholesterinemia, Obesity",yes,3,patient028,1991.0
+57,male,1995-01-13,,,,,unknown,,patient200,1995.0
+52,male,1993-03-18,Myocardial infarction,antero-lateral,no,Hypercholesterinemia,yes,1,patient099,1993.0
+66,male,1996-03-18,Hypertrophy,no,no,"Coronary artery disease, Post PTCA and Stent (RIVA), Arterial hypertension, Diabetes mellitus, Calcified aortic valve (mild stenosis), Hyperlipoproteinemia",no,2,patient212,1996.0
+29,male,1996-02-22,Bundle branch block,no,no,no,unknown,unknown,patient202,1996.0
+46,male,1992-07-17,Myocardial infarction,no,"anterior (1), inferior (2)","Recurrent sustained ventricular tachycardia, Arterial hypertension, Hyperlipoproteinemia Type IIa, Coronary artery disease, Cardioverter-Defibrillator",no,2,patient141,1992.0
+68,male,1997-02-28,Healthy control,no,no,no,unknown,unknown,patient266,1997.0
+46,male,1996-03-05,Myocardial infarction,no,anterior,"Bundle branch block, Coxarthrosis",yes,unknown,patient207,1996.0
+54,male,1997-02-14,Healthy control,no,no,no,unknown,unknown,patient252,1997.0
+57,female,1993-01-13,Healthy control,no,no,no,unknown,unknown,patient198,1993.0
+40,male,1997-02-21,Healthy control,no,no,no,unknown,unknown,patient251,1997.0
+17,male,1992-10-29,Dysrhythmia,no,no,Congenital complete AV-block,no,unknown,patient109,1992.0
+75,male,1992-02-19,Myocardial infarction,postero-lateral,no,"Diabetes mellitus, Renal insufficiency",yes,2,patient079,1992.0
+62,female,1990-11-17,Myocardial infarction,inferior,no,Arterial hypertension,no,1,patient011,1990.0
+77,female,1991-05-14,,,,,unknown,,patient179,1991.0
+68,male,1992-02-28,Myocardial infarction,inferior,anterior,"Hyperlipoproteinemia Type IIa, Diabetes mellitus, Renal insufficiency, Bladder cancer",yes,2,patient078,1992.0
+26,male,1992-08-14,Healthy control,no,no,no,unknown,unknown,patient174,1992.0
+87,male,1992-10-22,Dysrhythmia,no,no,"Atrial Fibrillation, Diabetes mellitus, Peripheral atherosclerosis, Chronic lymphatic leucemia",yes,unknown,patient157,1992.0
+56,male,1997-03-25,Dysrhythmia,no,no,Atrial fibrillation,unknown,unknown,patient286,1997.0
+63,male,1996-05-14,Hypertrophy,no,no,"Arterial hypertension, minimal aortic regurgitation",no,0,patient221,1996.0
+69,male,1997-02-21,Healthy control,no,no,no,unknown,unknown,patient255,1997.0
+34,male,1996-10-15,Healthy control,no,no,no,unknown,unknown,patient234,1996.0
+72,female,1993-01-11,Myocardial infarction,inferior,infero-lateral,"Arterial hypertension, Hyperlipemia, Peripheral atherosclerosis, Hyperuricemia, M. Basedow, Colon cancer",no,3,patient100,1993.0
+67,male,1990-12-03,Myocardial infarction,inferior,inferior,"Megaloblastic anemia, Vit. B12 deficiency, ACVB (1x)",yes,2,patient021,1990.0
+58,male,1992-09-04,Myocardial infarction,no,anterior,"Hypercholesterinemia, Recurrent ventricular tachycardias",yes,1,patient148,1992.0
+52,female,1991-09-09,Myocardial infarction,antero-septal,no,"Gastric ulcers, Struma nodosa",yes,1,patient058,1991.0
+63,male,1992-01-17,Myocardial infarction,antero-lateral,no,"Hypercholesterinemia, Ventricular fibrillation",no,1,patient073,1992.0
+22,female,1992-10-01,Healthy control,no,no,no,no,unknown,patient185,1992.0
+80,female,1991-07-18,Cardiomyopathy,no,no,Hypertropic obstructive cardiomyopathy (intraventricular gradient 70mmHg),no,unknown,patient167,1991.0
+70,female,1996-06-14,Cardiomyopathy,no,no,"Bundle branch block, Dilated cardiomyopathy",no,0,patient232,1996.0
+17,male,1992-06-16,Healthy control,no,no,no,unknown,unknown,patient156,1992.0
+68,female,1990-10-01,Valvular heart disease,no,no,"Synkope, Stable angina, Aortic stenosis (gradient 90mmHg), Varicosis",no,0,patient114,1990.0
+48,female,1997-01-17,Healthy control,no,no,no,unknown,unknown,patient247,1997.0
+33,male,1996-10-24,Healthy control,no,no,no,unknown,unknown,patient241,1996.0
+57,male,1997-02-18,Cardiomyopathy,no,no,"Atrial fibrillation, Dilated cardiomyopathy",no,unknown,patient254,1997.0
+63,female,1990-11-15,,,,,unknown,,patient192,1990.0
+65,male,1992-08-05,Myocardial infarction,antero-septal,no,"Arterial hypertension, Hypercholesterinemia, Chronic hepatitis",no,1,patient082,1992.0
+64,female,1991-04-19,Myocardial infarction,antero-septal,anterior,Postop. Thyroidectomy,yes,1,patient046,1991.0
+60,male,1990-10-30,Myocardial infarction,inferior,no,Hypercholesterinemia,yes,2,patient008,1990.0
+55,female,1991-05-17,Myocardial infarction,antero-septal,no,no,no,0,patient051,1991.0
+48,male,,,,,,unknown,,patient275,
+24,male,1997-02-14,Healthy control,no,no,no,unknown,unknown,patient233,1997.0
+79,female,1991-05-28,,,,,unknown,,patient176,1991.0
+57,male,1992-03-23,Healthy control,no,no,no,unknown,unknown,patient170,1992.0
+57,male,1992-03-23,Healthy control,no,no,no,unknown,unknown,patient166,1992.0
+68,male,1992-07-21,Healthy control,no,no,no,unknown,unknown,patient122,1992.0
+32,male,1996-02-28,Bundle branch block,no,no,no,no,unknown,patient203,1996.0
+84,female,1990-08-13,Unstable angina,no,unknown,"Arterial hypertension, Recurrent pulmonary oedema, Diabetes mellitus, Hyperlipoproteinemia",no,unknown,patient196,1990.0
+51,male,1991-08-08,,,,,unknown,,patient136,1991.0
+75,female,1990-11-05,Dysrhythmia,no,no,"Atrial fibrillation, Obesity",no,unknown,patient168,1990.0
+57,female,1991-05-14,Myocardial infarction,no,antero-lateral,"Recurrent ventricular tachycardia, Dilated cardiomyopathy secondary to coronary artery disease, Hyperthyreosis",no,1,patient183,1991.0
+74,female,1991-01-03,Myocardial infarction,inferior,no,Diabetes mellitus,no,3,patient026,1991.0
+65,male,1992-03-23,Myocardial infarction,infero-lateral,postero-lateral,"Gastric ulcers, Hyperglykemia",no,2,patient041,1992.0
+66,female,1991-08-14,Dysrhythmia,no,no,"Atrial Fibrillation, Prosthetic valve in mitral position, Hyperlipoproteinemia Type IIa",no,unknown,patient151,1991.0
+54,male,1991-08-14,Myocardial infarction,antero-septal,no,Kidney stones,no,1,patient060,1991.0
+53,male,1991-04-12,Myocardial infarction,antero-lateral,no,Hypercholesterinemia,no,1,patient027,1991.0
+43,male,1993-01-08,Myocardial infarction,antero-lateral,no,"Diabetes mellitus, Arterial hypertension, Obesity",yes,2,patient096,1993.0
+72,male,1992-08-31,Myocardial infarction,antero-septal,anterior,Arterial hypertension,no,unknown,patient120,1992.0
+78,female,1997-03-25,Myocardial infarction,infero-postero-lateral,no,unknown,unknown,unknown,patient287,1997.0
+48,female,1991-06-20,Myocardial infarction,anterior,no,no,no,0,patient056,1991.0
+31,male,1993-01-07,Dysrhythmia,no,no,,yes,unknown,patient133,1993.0
+68,female,1990-11-22,Myocardial infarction,infero-lateral,no,"Arterial hypertension, Hypercholesterinemia",no,3,patient015,1990.0
+67,male,1992-09-01,,,,,unknown,,patient143,1992.0
+54,female,1990-12-05,Myocardial infarction,anterior,no,"Arterial hypertension, Hyperlipoproteinemia, Obesity, Colon cancer",no,1,patient020,1990.0
+44,male,1991-09-20,Myocardial infarction,antero-lateral,no,"Hyperlipoproteinemia Type IIb, Struma",yes,1,patient068,1991.0
+32,female,1992-06-24,Healthy control,no,no,no,unknown,unknown,patient105,1992.0
+76,male,1996-05-09,Bundle branch block,no,no,"Atrial fibrillation, Coronary artery disease (ACVB 2x), Postop. Nephrectomy",no,3,patient220,1996.0
+66,female,1992-07-31,Myocardial infarction,infero-lateral,"anterior (1), anterior (2)","Hyperlipoproteinemia Type IV b, Diabetes mellitus, Peripheral atherosclerosis, Arterial hypertension, Cerebral stroke, Colon cancer",yes,3,patient086,1992.0
+32,female,1992-12-08,Cardiomyopathy,no,no,"Heart failure (NYHA 3), Hypertrophic obstructive cardiomyopathy (intraventricular gradient 100-160mmHg)",no,0,patient127,1992.0
+52,male,1991-12-03,Myocardial infarction,inferior,no,Hyperlipoproteinemia Type IIb,yes,1,patient070,1991.0
+46,male,1992-11-30,Myocardial infarction,inferior,no,no,yes,2,patient095,1992.0
+68,female,1990-11-05,Myocardial infarction,anterior,anterior ?,Arterial hypertension,no,unknown,patient163,1990.0
+72,male,1991-09-12,Myocardial infarction,postero-lateral,no,"Hypercholesterinemia, Arterial hypertension, Hyperuricemia",no,1,patient064,1991.0
+63,male,1991-01-16,Myocardial infarction,antero-septal,no,no,yes,1,patient030,1991.0
+43,male,1990-12-03,Myocardial infarction,infero-lateral,no,no,yes,1,patient022,1990.0
+51,male,1997-02-27,Myocardial infarction,no,inferior,unknown,unknown,unknown,patient261,1997.0
+30,male,1996-10-15,Healthy control,no,no,no,unknown,unknown,patient235,1996.0
+67,male,1996-02-28,Bundle branch block,no,unknown,unknown,unknown,unknown,patient204,1996.0
+52,male,1990-12-19,Myocardial infarction,infero-postero-lateral,no,"Arterial hypertension, Obesity, Hyperlipoproteinemia Type IIa",no,1,patient018,1990.0
+57,female,1992-06-24,Healthy control,no,no,no,unknown,unknown,patient173,1992.0
+36,male,1992-03-27,Healthy control,no,no,no,unknown,unknown,patient150,1992.0
+66,female,1991-06-13,Myocardial infarction,infero-lateral,no,"Hyperlipoproteinemia Type IIb, Obesity, Arterial hypertension",no,2,patient055,1991.0
+73,male,1996-06-07,Bundle branch block,no,no,"Coronary artery disease, Diabetes mellitus, Arterial hypertension",no,2,patient228,1996.0
+20,male,1990-09-25,,,,,unknown,,patient146,1990.0
+61,male,1994-10-24,Myocardial infarction,no,anterior,unknown,unknown,unknown,patient282,1994.0
+46,male,1990-11-06,Myocardial infarction,anterior,no,"Rheumatoid arthritis,Hyperlipoproteinemia Type IV",no,1,patient010,1990.0
+78,female,1992-11-09,Myocardial infarction,antero-septal,no,Arterial hypertension,no,2,patient091,1992.0
+57,male,1997-03-04,Myocardial infarction,antero-lateral,no,unknown,unknown,unknown,patient265,1997.0
+45,male,1992-03-26,Myocardial infarction,anterior,no,Hyperlipoproteinemia Type IIa,yes,1,patient083,1992.0
+59,male,1996-10-17,Healthy control,no,no,no,unknown,unknown,patient239,1996.0
+56,female,1992-06-15,Myocardial infarction,posterior,no,"Arterial hypertension, Diabetes mellitus, Hyperlipoproteinemia Type IV, Obesity",yes,unknown,patient085,1992.0
+60,female,1996-05-21,Cardiomyopathy,no,no,"Hypertrophic (obstructive) cardiomyopathy, Asthma bronchiale",no,0,patient222,1996.0
+50,male,1992-01-24,Myocardial infarction,inferior,no,M. Bechterew,yes,1,patient075,1992.0
+80,female,1992-11-24,Myocardial infarction,infero-lateral,no,"Arterial hypertension, Hyperlipoproteinemia Type IIa",no,3,patient089,1992.0
+68,female,1991-09-06,Myocardial infarction,antero-lateral,anterior,Arterial hypertension,no,1,patient062,1991.0
+73,male,1993-01-07,Hypertrophy,no,no,"Arterial hypertension, Hyperlipoproteinemia, Obesity, Bladder cancer",yes,0,patient159,1993.0
+59,male,1991-04-29,Dysrhythmia,no,unknown,"Palpitation, Arterial hypertension, Obesity",no,unknown,patient112,1991.0
+51,male,1992-11-17,Valvular heart disease,no,no,"Post rheumatic fever, Aortic valve regurgitation (grade1-2), Mitral regurgitation (grade 2), poor LV function",no,0,patient188,1992.0
+41,female,1991-07-18,Valvular heart disease,no,no,"Mitral stenosis/regurgitation, Pulmonary fibrosis, Anemia",unknown,0,patient107,1991.0
+57,male,1993-01-13,Bundle branch block,unknown,unknown,no,unknown,unknown,patient199,1993.0
+48,male,1992-11-27,Myocardial infarction,inferior,no,no,yes,3,patient093,1992.0
+63,male,1996-03-05,Myocardial infarction,no,inferior,"Bundle branch block, Asthma bronchiale",no,unknown,patient205,1996.0
+84,male,1990-09-25,Myocardial infarction,no,inferior,"Coronary artery disease, Arterial Hypertension, Hyperuricemia",no,unknown,patient138,1990.0
+52,male,1993-01-07,Dysrhythmia,no,no,Atrial flutter,unknown,unknown,patient153,1993.0
+45,male,1997-02-27,Healthy control,no,no,no,unknown,unknown,patient264,1997.0
+38,female,1996-06-04,Valvular heart disease,no,no,"AV-reentry tachycardia, Prosthetic aortic valve replacement (post Endocarditis) actual gradient=64mmHg",no,unknown,patient224,1996.0
+40,male,1991-02-04,Myocardial infarction,inferior,no,"Arterial hypertension, Hypercholesterinemia",no,2,patient035,1991.0
+41,female,1997-02-27,Cardiomyopathy,no,no,Hypertrophic obstructive cardiomyopathy,unknown,unknown,patient262,1997.0
+61,male,1991-04-25,Myocardial infarction,antero-septal,no,Hyperlipoproteinemia Type IV,yes,1,patient039,1991.0
+42,male,1997-02-20,Dysrhythmia,no,no,WPW-syndrome,no,unknown,patient258,1997.0
+66,male,1996-04-06,Bundle branch block,no,no,Coronary artery disease (PTCA+Stent),no,2,patient219,1996.0
+53,male,1991-07-25,Myocardial infarction,no,anterior,"Dilated Cardiomyopathy secondary to coronary artery disease. Mitral regurgitation (grade 2), Tricuspid regurgitation (grade 2), Atrial fibrillation",no,1,patient149,1991.0
+62,male,1991-09-06,Myocardial infarction,antero-lateral,no,"Arterial hypertension, Kidney cysts",yes,2,patient063,1991.0
+67,male,1992-07-17,,,,,unknown,,patient194,1992.0
+64,female,1997-02-20,Cardiomyopathy,no,no,"Dilated cardiomyopathy, Recurrent ventricular tachycardias",no,unknown,patient256,1997.0
+61,male,1992-07-17,Myocardial infarction,no,inferior,"Ventricular fibrillation, Coronary artery disease, Arterial Hypertension, Mitral regurgitation (grade 2), Aortic valve regurgitation (grade 1)",yes,unknown,patient189,1992.0
+53,male,1992-03-17,Myocardial infarction,anterior,no,"Arterial hypertension, Hyperlipoproteinemia Type IIa",yes,1,patient081,1992.0
+47,male,1996-10-17,Healthy control,no,no,no,unknown,unknown,patient237,1996.0
+46,male,1990-10-31,Valvular heart disease,no,no,"Prosthetic valve, Aortic stenosis (moderate, prostetic valve), Aortic regurgitation (grade 2-3)",unknown,unknown,patient106,1990.0
+72,female,1993-03-16,Myocardial infarction,inferior,no,"Arterial hypertension, Hyperlipoproteinemia Type IIa, Obesity",no,3,patient102,1993.0
+54,male,1992-10-29,Myocardial infarction,no,infero-posterior,"Palpitation, Postop. Posthetic valve replacement in aortic position, WPW-Syndrome (left postero-lateral bypass tract confirmed by sucessful RF-ablation), Postop. ACVB (3x)",yes,3,patient142,1992.0
+53,male,1991-07-11,Myocardial infarction,inferior,no,no,yes,1,patient057,1991.0
+44,male,1996-11-15,Healthy control,no,no,no,unknown,unknown,patient244,1996.0
+55,male,1996-06-13,Healthy control,no,no,no,unknown,unknown,patient229,1996.0
+70,male,1996-04-12,Dysrhythmia,no,no,"Coronary artery disease, Arterial hypertension",no,1,patient218,1996.0
+50,male,1991-01-30,Myocardial infarction,anterior,no,Hyperlipoproteinemia Type IV,yes,1,patient037,1991.0
+49,male,1991-01-14,Myocardial infarction,antero-septal,inferior,no,yes,2,patient029,1991.0
+68,male,1993-01-07,Myocardial infarction,anterior,no,"Diabetes mellitus, Arterial hypertension, Hypercholesterinemia",no,3,patient097,1993.0
+54,male,1993-01-22,Myocardial infarction,inferior,no,Gastric ulcers,yes,2,patient088,1993.0
+60,male,1990-12-10,Myocardial infarction,infero-lateral,inferior,Arterial hypertension,no,2,patient017,1990.0
+28,male,1996-10-24,Healthy control,no,no,no,unknown,unknown,patient240,1996.0
+57,male,1996-06-14,Myocardial infarction,infero-lateral,no,no,no,1,patient231,1996.0
+54,female,1992-09-04,Myocardial infarction,no,infero-posterior,"Recurrent ventricular fibrillation, Arterial hypertension, Peripheral atherosclerosis, Cardioverter-Defibrillator (1993), postop. ACVB (1991), Mitral regurgitation grade II",no,2,patient135,1992.0
+63,male,1990-12-17,Myocardial infarction,infero-lateral,no,"Diabetes mellitus, Hyperuricemia",no,2,patient016,1990.0
+39,male,1996-02-22,Cardiomyopathy,no,unknown,"Atrial fibrillation, Hypertropic cardiomyopathy",unknown,unknown,patient201,1996.0
+56,male,1996-03-12,Hypertrophy,no,no,"Mesangio-proliferative Glomerulonephritis, Post Renal Tx, Arterial hypertension",no,unknown,patient210,1996.0
+68,male,1996-06-14,Myocardial infarction,infero-postero-lateral,no,no,no,1,patient230,1996.0
+56,male,1996-06-04,Myocardial infarction,antero-septal,no,Stent,no,1,patient223,1996.0
+25,female,1996-10-17,Healthy control,no,no,no,unknown,unknown,patient236,1996.0
+57,male,,Healthy control,no,no,no,unknown,unknown,patient277,
+51,male,1991-02-18,Myocardial infarction,inferior,no,Hyperlipoproteinemia Type IV,yes,1,patient040,1991.0
+35,female,1992-11-19,Dysrhythmia,no,no,Congenital complete AV-block,no,unknown,patient177,1992.0
+63,male,1991-07-18,Myocardial infarction,no,infero-postero-lateral,"Ventricular fibrillation, Arterial hypertension, Diabetes mellitus, Hyperlipoproteinemia Type IIb, Renal insufficiency",no,3,patient145,1991.0
+80,female,1992-01-21,Myocardial infarction,infero-lateral,no,"Arterial hypertension, Hyperlipemia, Ventricular fibrillation",no,unknown,patient074,1992.0
+46,male,1996-03-07,Bundle branch block,no,no,no,no,unknown,patient208,1996.0
+75,female,1990-10-22,Myocardial infarction,no,antero-septal ?,"Pericardial effusion, Diabetes mellitus, Renal insufficiency, Dialysis, Arterial hypertension, Hyperlipoproteinemia, Peripheral atherosclerosis",no,unknown,patient140,1990.0
+29,male,1992-07-16,Healthy control,no,no,no,unknown,unknown,patient182,1992.0
+69,female,1997-03-27,Cardiomyopathy,no,no,Hypertrophic obstructive cardiomyopathy,unknown,unknown,patient289,1997.0
+66,male,1991-06-10,Myocardial infarction,antero-septal,no,"Obesity, Ventricular fibrillation",yes,1,patient053,1991.0
+26,male,1992-08-14,Healthy control,no,no,no,unknown,unknown,patient165,1992.0
+57,male,,Myocardial infarction,infero-lateral,no,unknown,unknown,unknown,patient274,
+66,male,1992-08-20,Myocardial infarction,infero-postero-lateral,no,Arterial hypertension,yes,3,patient087,1992.0
+67,male,1994-10-07,Myocardial infarction,no,infero-lateral,Recurrent ventricular tachycardias,unknown,unknown,patient280,1994.0
+50,male,1992-06-24,Healthy control,no,no,no,unknown,unknown,patient172,1992.0
+57,male,1991-06-11,,,,,unknown,,patient162,1991.0
+41,male,1997-03-06,Myocarditis,no,no,Arterial hypertension,unknown,unknown,patient271,1997.0
+54,male,1992-06-19,Healthy control,no,no,no,unknown,unknown,patient116,1992.0
+65,male,1991-01-21,Myocardial infarction,inferior,no,no,yes,1,patient031,1991.0
+75,male,1991-07-25,Myocardial infarction,no,"anterior (1), inferior (2)","Post ventricular fibrillation, COLD, Hyperlipemia",no,unknown,patient111,1991.0
+82,male,1996-04-02,Cardiomyopathy,no,unknown,"Coronary artery disease, Postop. ACVB (3x), Dilated cardiomyopathy, Bundle branch block",no,3,patient215,1996.0
+58,male,1992-07-13,Healthy control,no,no,no,unknown,unknown,patient104,1992.0
+75,male,1991-04-29,Stable angina,no,unknown,"Coronary heart disease, Arterial Hypertension, Diabetes mellitus, Hyperlipoproteinemia Type IIa, Aortic stenosis (mild), Obesity",no,unknown,patient130,1991.0
+57,male,1990-11-09,,,,,unknown,,patient190,1990.0
+62,male,1991-08-14,Dysrhythmia,no,no,"Atrial fibrillation, Heart failure (NYHA 2-3), Venous thrombosis (eye)",unknown,unknown,patient187,1991.0
+69,male,1990-12-17,Myocardial infarction,inferior,no,"Hypercholesterinemia, peripheral atherosclerosis",no,3,patient023,1990.0
+64,female,1992-11-17,Bundle branch block,no,no,Psoriasis,unknown,unknown,patient171,1992.0
+48,male,1992-07-31,Myocardial infarction,infero-postero-lateral,no,"Hyperlipoproteinemia Type IIb, Ventricular fibrillation",yes,2,patient080,1992.0
+58,female,1990-10-17,Myocardial infarction,anterior,no,"Arterial hypertension, Adiposis hepatis, Gastritis",yes,1,patient002,1990.0
+74,female,1990-10-25,Heart failure (NYHA 2),no,no,"Arteriel hypertension, Diabetes mellitus, diabetic nephropathy, Basalioma",no,unknown,patient115,1990.0
+51,male,1993-01-13,Myocardial infarction,antero-septal,inferior (1+2),Recurrent ventricular tachycardias,no,unknown,patient197,1993.0
+71,female,1990-11-17,Myocardial infarction,antero-septal,no,"Diabetes mellitus, Renal insufficiency",yes,1,patient013,1990.0
+62,male,1997-02-18,Cardiomyopathy,no,no,"Atrial fibrillation, Dilated cardiomyopathy",no,unknown,patient253,1997.0
+74,male,1990-10-25,Myocardial infarction,anterior,no,Skoliosis,no,2,patient005,1990.0
+44,female,1991-05-17,Myocardial infarction,inferior,no,no,yes,1,patient050,1991.0
+60,male,1997-03-04,Myocardial infarction,antero-lateral,no,unknown,unknown,unknown,patient270,1997.0
+63,female,1991-08-14,Myocardial infarction,infero-lateral,no,"Hyperlipoproteinemia Type IIb, Arterial hypertension, Obesity",no,1,patient059,1991.0
+54,female,1992-08-19,Healthy control,no,no,no,unknown,unknown,patient169,1992.0
+53,male,1991-05-28,Cardiomyopathy,no,no,"Heart failure (NYHA 2-3), Alcohol abuse, Dilated cardiomyopathy",yes,1,patient129,1991.0
+62,male,1994-08-12,,,,,unknown,,patient278,1994.0
+57,male,1990-08-13,Valvular heart disease,no,no,"Mitral regurgitation, Arterial hypertension",no,unknown,patient110,1990.0
+62,male,1991-11-19,Myocardial infarction,antero-lateral,no,no,yes,1,patient069,1991.0
+70,male,1991-05-22,Heart failure (NYHA 3),no,unknown,"Coronary heart disease, Arterial hypertension",yes,2,patient118,1991.0
+46,male,1997-02-27,Myocarditis,no,no,no,no,unknown,patient249,1997.0
+52,male,1991-09-13,Myocardial infarction,infero-postero-lateral,no,no,no,1,patient065,1991.0
+51,male,1992-11-05,Myocardial infarction,inferior,no,"Obesity, Arterial hypertension",yes,0,patient090,1992.0
+52,female,1992-03-23,Myocardial infarction,lateral,no,"Hyperlipoproteinemia Type IIa, Arterial hypertension, Ventricular fibrillation",yes,1,patient043,1992.0
+63,female,1993-01-15,Myocardial infarction,inferior,no,"Pulmonary fibrosis, Arterial hypertension, Hyperlipoproteinemia Type IIa",no,3,patient098,1993.0
+68,male,1996-03-18,Myocardial infarction,no,anterior,Periperal atherosclerosis,yes,unknown,patient211,1996.0
+51,male,1996-03-07,Bundle branch block,no,unknown,"Epipharyngeal cancer, Cholesteatoma",yes,unknown,patient209,1996.0
+57,male,1993-01-15,Myocardial infarction,antero-septal,inferior,"Diabetes mellitus, Hyperlipoproteinemia Type IIa",yes,2,patient101,1993.0
+57,male,1990-12-17,Myocardial infarction,infero-lateral,no,"Arterial hypertension, Hyperlipoproteinemia Typ IIa, Obesity",yes,1,patient019,1990.0
+68,male,1997-02-20,Cardiomyopathy,no,no,"Atrial fibrillation, Dilated cardiomyopathy, Chronic myocarditis",no,unknown,patient257,1997.0
+57,female,1990-09-26,Bundle branch block,no,no,no,unknown,unknown,patient175,1990.0
+49,male,1991-03-04,Myocardial infarction,antero-septal,no,no,yes,1,patient042,1991.0
+32,male,1996-03-05,Bundle branch block,no,no,Tinnitus,no,unknown,patient206,1996.0
+43,male,1992-02-12,Myocardial infarction,antero-lateral,no,no,yes,1,patient076,1992.0
+30,male,1997-02-07,Healthy control,no,no,no,unknown,unknown,patient245,1997.0
+55,male,1991-09-18,Myocardial infarction,inferior,unknown,"Dilated Cardiomyopathy secondary to coronary artery disease, Diabetes mellitus, Obesity",yes,2,patient160,1991.0
+71,female,1992-10-22,Myocardial infarction,no,"infero-posterior (1), inferior (2)","Arterial Hypertension, Peripheral atherosclerosis, Hyperlipoproteinemia",unknown,unknown,patient195,1992.0
+67,male,1990-11-12,Myocardial infarction,inferior,inferior,Renal insufficiency,yes,3,patient012,1990.0
+66,female,1991-03-27,Myocardial infarction,anterior,anterior,Peripheral atherosclerosis,yes,3,patient044,1991.0
+40,male,1992-01-21,Myocardial infarction,infero-lateral,no,Hyperlipoproteinemia Type IIa,yes,1,patient072,1992.0
+85,female,1991-09-18,Myocardial infarction,inferior,inferior,Diabetes mellitus,no,unknown,patient139,1991.0
+62,female,1990-12-03,Myocardial infarction,anterior,inferior ?,Struma (euthyroid),yes,2,patient006,1990.0
+60,male,1992-10-26,Stable angina,no,unknown,"COLD,Hyperlipoproteinemia",yes,3,patient191,1992.0
+29,male,1996-10-17,Healthy control,no,no,no,unknown,unknown,patient238,1996.0
+58,female,1997-02-27,Myocardial infarction,inferior,no,unknown,unknown,unknown,patient259,1997.0
+71,female,1992-11-23,Myocardial infarction,antero-lateral,no,"Diabetes mellitus, Hyperthyroidism",no,unknown,patient094,1992.0
+59,male,1991-09-18,Myocardial infarction,infero-lateral,anterior,"Arterial hypertension, Diabetes mellitus",yes,3,patient067,1991.0
+75,male,1991-01-28,Myocardial infarction,antero-septal,no,no,no,3,patient036,1991.0
+69,male,,Myocardial infarction,anterior,no,unknown,unknown,unknown,patient273,
+62,female,1996-04-12,Bundle branch block,no,no,"Diabetes mellitus, Arterial hypertension",no,unknown,patient217,1996.0
+75,male,1990-12-10,Myocardial infarction,anterior,no,Arterial hypertension,no,1,patient014,1990.0
+61,male,1997-03-06,Myocarditis,no,no,Bundle branch block,unknown,unknown,patient269,1997.0
+58,male,1996-03-18,Bundle branch block,no,no,Postop. Rectum adenoma,no,unknown,patient213,1996.0
+69,female,1992-07-21,Healthy control,no,no,no,unknown,unknown,patient121,1992.0
+76,male,1991-01-07,Myocardial infarction,antero-septal,no,"Diabetes mellitus, Arterial hypertension",no,2,patient025,1991.0
+35,male,,Healthy control,no,no,no,unknown,unknown,patient214,
+49,male,1991-01-23,Myocardial infarction,antero-septal,no,no,yes,unknown,patient034,1991.0
+36,male,1991-02-13,Myocardial infarction,antero-lateral,no,no,yes,1,patient038,1991.0
+68,male,1991-09-23,Myocardial infarction,inferior,no,no,no,1,patient066,1991.0
+57,female,1992-10-26,,,,,unknown,,patient144,1992.0
+26,male,1992-03-23,Healthy control,no,no,no,unknown,unknown,patient131,1992.0
+79,female,1990-08-14,Myocardial infarction,infero-postero-lateral,no,Diabetes mellitus,no,1,patient152,1990.0
+57,male,1997-02-21,Healthy control,no,no,no,unknown,unknown,patient260,1997.0
+80,male,1991-12-03,Myocardial infarction,infero-lateral,no,Arterial hypertension,yes,1,patient071,1991.0
+57,male,1991-04-29,,,,,unknown,,patient154,1991.0
+69,male,1990-10-23,Myocardial infarction,antero-septal,no,"Arterial hypertension, Obesity",no,1,patient004,1990.0
+86,male,1991-04-19,Myocardial infarction,antero-septal,infero-posterior,Peripheral atherosclerosis,yes,unknown,patient047,1991.0
+73,female,1996-04-02,Hypertrophy,no,no,"Renal insufficiency, Arterial hypertension, Rheumatoid arthritis",no,unknown,patient216,1996.0
+52,female,1996-10-31,Healthy control,no,no,no,unknown,unknown,patient243,1996.0
+69,male,1997-05-29,Myocardial infarction,inferior,inferior,unknown,unknown,unknown,patient291,1997.0
+42,female,1991-05-17,Myocardial infarction,inferior,no,"Postop. Thyriodectomy, Ventricular fibrillation",yes,0,patient049,1991.0
+62,male,1996-06-06,Myocardial infarction,infero-lateral,no,"Prosthetic aortic valve, Arterial hypertension, Mitral regurgitation (grade 2)",no,unknown,patient226,1996.0
+83,male,1990-08-09,,,,,unknown,,patient119,1990.0
+53,male,1997-02-14,Hypertrophy,no,no,Arterial hypertension,no,unknown,patient250,1997.0
+85,female,1990-10-01,,,,,unknown,,patient178,1990.0
+52,male,1990-12-24,Myocardial infarction,antero-septal,no,"Gastritis, Rheumatoid arthritis",no,1,patient024,1990.0
+52,male,1996-06-07,Hypertrophy,no,no,"Coronary artery disease, Arterial hypertension",no,3,patient227,1996.0
+66,male,1990-11-06,Myocardial infarction,infero-lateral,no,"Nephrotic syndrome, Rheumatoid arthritis",yes,2,patient009,1990.0
+75,male,1997-06-03,Myocardial infarction,antero-lateral,no,unknown,unknown,2,patient293,1997.0
+77,male,,Myocardial infarction,infero-posterior,no,"Peripheral atherosclerosis, Cerebral stroke, COLD",no,unknown,patient108,
+28,female,1996-10-29,Healthy control,no,no,no,unknown,unknown,patient242,1996.0
+57,male,1991-08-08,,,,,unknown,,patient181,1991.0
+67,female,1997-02-28,Healthy control,no,no,no,unknown,unknown,patient267,1997.0
+52,male,1992-08-31,Myocardial infarction,no,antero-lateral,"Recurrent ventricular tachycardia, ACVB (RIVA)",unknown,2,patient103,1992.0
+82,male,1994-10-24,Myocardial infarction,no,anterior,"Atrial fibrillation, Ventricular tachycardias",unknown,unknown,patient283,1994.0
+56,female,1996-06-06,Bundle branch block,no,no,"Dilated cardiomyopathy, Chronic glomerulonephritis, Arterial hypertension, Suspected Lupus",no,unknown,patient225,1996.0
+87,female,1990-10-25,,,,,unknown,,patient164,1990.0
+44,male,1991-06-03,Myocardial infarction,infero-lateral,no,Arterial hypertension,yes,1,patient052,1991.0
+65,male,1992-02-21,Myocardial infarction,inferior,no,"Arterial hypertension, Diabetes mellitus",yes,unknown,patient077,1992.0
+49,male,1991-01-21,Myocardial infarction,antero-septal,no,Arterial Hypertension,no,3,patient032,1991.0
+70,male,1990-11-07,Myocardial infarction,anterior,antero-septal,Hyperlipoproteinemia,no,3,patient007,1990.0
+81,female,1992-11-17,Healthy control,no,no,no,no,unknown,patient184,1992.0
+81,female,1990-10-01,Myocardial infarction,infero-lateral,no,Diabetes mellitus,no,1,patient001,1990.0
+57,male,,Healthy control,no,no,no,unknown,unknown,patient276,
+44,female,1992-11-12,Myocardial infarction,inferior,no,Arterial hypertension,yes,0,patient092,1992.0
+57,male,1990-09-25,,,,,unknown,,patient125,1990.0
+37,male,1997-02-27,Healthy control,no,no,no,unknown,unknown,patient263,1997.0
+65,female,1990-10-22,Dysrhythmia,no,no,"Atrial fibrillation, Coronary artery disease,COLD, Aortic stenosis(gradient 85 mmHg)/regurgitation (grade 1-2)",no,unknown,patient113,1990.0
+66,male,1997-06-03,Myocardial infarction,antero-lateral,no,Arterial hypertension,unknown,unknown,patient292,1997.0
+54,male,1997-01-17,Healthy control,no,no,no,unknown,unknown,patient246,1997.0
+68,male,1994-10-14,,,,,unknown,,patient281,1994.0
