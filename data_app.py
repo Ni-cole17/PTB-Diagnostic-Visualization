@@ -9,8 +9,8 @@ from sklearn.decomposition import PCA
 
 from bokeh.plotting import figure, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
-from bokeh.models import ColumnDataSource, PreText, LegendItem, DataRange1d,RadioButtonGroup, Spinner, Select, HoverTool, CrosshairTool, CustomJS
-from bokeh.layouts import gridplot, column
+from bokeh.models import ColumnDataSource, PreText, Div, LegendItem, DataRange1d,RadioButtonGroup, Spinner, Select, HoverTool, CrosshairTool, CustomJS
+from bokeh.layouts import gridplot, column, row
 from bokeh import events
 from bokeh.events import RangesUpdate
 
@@ -222,24 +222,55 @@ def generate_matrix_thresh(attrname, old, new):
 
 
 ## MAIN
-
 global signals_t
 global quantile_vbars
 global spinner_end
+
+## Styles
+spinner_style = {
+    'font': 'helvetica',   # Change to your preferred font
+    'font_size': '14pt',    # Adjust font size
+    'text_color': '#333333',  # Set text color
+    'margin': '5px',         # Add margin
+    'width': '200px',        # Set width
+}
+dropdown_style = {
+    'font': 'helvetica',   # Change to your preferred font
+    'font_size': '14pt',    # Adjust font size
+    'text_color': '#333333',  # Set text color
+    'margin': '5px',         # Add margin
+    'width': '200px',        # Set width
+}
+div_style = {
+    'font': 'helvetica',   # Change to your preferred font
+    'font_size': '20pt',    # Adjust font size
+    'text_color': '#333333',  # Set text color
+    'margin': '5px',         # Add margin
+    'width': '1000px',        # Set width
+}
+
 
 ## Reading info data
 df = pd.read_csv('data/Record_info.csv')
 with open('data/patient_heas.json') as json_file:
     data = json.load(json_file)
 
+## Texts
+div_form = Div(text="<b>Selecione as opções para gerar a visualização</b>", width=500, height=20,styles=div_style)
+div_visualization = Div(text="<b>Visualização do resultado</b>", width=300, height=20,styles=div_style)
+
 ## Switch
 LABELS = ["UTRP", "TRP"]
+label_div1 = Div(text="<b>Tipos de matriz</b>", width=300, height=20)
 switch = RadioButtonGroup(labels=LABELS, active=0)
 
 LABELS2 = ["12d", "3d","PCA"]
+label_div2 = Div(text="<b>Canais</b>", width=300, height=20)
 switch2 = RadioButtonGroup(labels=LABELS2, active=0)
 
 LABELS3 = ["Sem filtro","Filtro passa banda"]
+# Add a label using a Div element
+label_div3 = Div(text="<b>Filtro</b>", width=300, height=20)
 switch3 = RadioButtonGroup(labels=LABELS3, active=0)
  
 ## Reading the signal and creating recurrence plot
@@ -275,22 +306,23 @@ hover_tool = HoverTool(tooltips=[("Value", "@image"),("(x,y)", "($x, $y)")],call
 
 ## Dropdown patology
 valid_options_patology = pd.notna(df['Reason for admission'])
-dropdown_patology = Select(title="Selecione a Patologia", value="All", options=["All"] + list(df.loc[valid_options_patology, 'Reason for admission'].unique()))
+dropdown_patology = Select(title="Selecione a Patologia", value="All", options=["All"] + list(df.loc[valid_options_patology, 'Reason for admission'].unique()),styles=dropdown_style)
 
 ## Dropdown patient
-dropdown_pat = Select(title="Selecione o Paciente", value=list(df['idP'])[0], options=list(df['idP']))
+dropdown_pat = Select(title="Selecione o Paciente", value=list(df['idP'])[0], options=list(df['idP']),styles=dropdown_style)
 selected_patient = dropdown_pat.value
 
 ## Dropdown exam
-dropdown_exam = Select(title="Selecione o Exame", value=data[selected_patient]["heas"][0], options=data[selected_patient]["heas"])
+dropdown_exam = Select(title="Selecione o Exame", value=data[selected_patient]["heas"][0], options=data[selected_patient]["heas"],styles=dropdown_style)
 
 
 ## Spinner
-spinner_start = Spinner(title="Selecione o ponto de inicio do sinal:", low=0, high=signals_t.shape[0], step=1, value=0)
+spinner_start = Spinner(title="Selecione o ponto de inicio do sinal:", low=0, high=signals_t.shape[0], step=1, value=0, styles=spinner_style)
 spinner_end = spinner_start.value + 2000# Spinner(title="S o ponto de término do sinal:", low=0, high=signals_t.shape[0], step=1, value=2000)
-spinner_channel = Spinner(title="Selecione um Canal :", low=0, high=signals_t.shape[1]-1, step=1, value=0)
-thresh_value_down = Spinner(title="Escolha um limiar inferior para o gráfico de recorrência",low=-1, high=20, step=0.01, value = -1)
-thresh_value_up = Spinner(title="Escolha um limiar superior para o gráfico de recorrência",low=0, high=20, step=0.01, value = 0.3)
+spinner_channel = Spinner(title="Selecione um Canal :", low=0, high=signals_t.shape[1]-1, step=1, value=0, styles=spinner_style)
+thresh_value_down = Spinner(title="Escolha um limiar inferior para o gráfico de recorrência",low=-1, high=20, step=0.01, value = -1, styles=spinner_style)
+thresh_value_up = Spinner(title="Escolha um limiar superior para o gráfico de recorrência",low=0, high=20, step=0.01, value = 0.3, styles=spinner_style)
+
 ## Crosshair
 crosshair = CrosshairTool(dimensions='both') 
 
@@ -369,8 +401,26 @@ p4.add_tools(hover_tool)
 ## Making a grid
 grid = gridplot([[p,p2,p5], [p3, p4, p11],[None,p1]])
 
-## Adding to document
-curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,switch,switch2,switch3,thresh_value_up,thresh_value_down,grid))
+# Create sub-columns for related elements
+column0 = column(div_form)
+column1 = column(dropdown_patology, dropdown_pat, dropdown_exam,label_div2, switch2)
+column2 = column(spinner_channel, spinner_start,label_div1, switch,label_div3, switch3)
+column3 = column(thresh_value_up, thresh_value_down)
+column4 = column(div_visualization)
+
+# Combine the sub-columns into rows
+row0 = row(column0)
+row1 = row(column1, column2)
+row2 = row(column3)
+row3 = row(column4)
+
+# Combine rows into a final column layout
+final_layout = column(row0,row1, row2,row3, grid)
+
+# Add the final layout to the document
+curdoc().add_root(final_layout)
+
+#curdoc().add_root(column(dropdown_patology,dropdown_pat,dropdown_exam,spinner_channel,spinner_start,label_div1,switch,label_div2,switch2,label_div3,switch3,thresh_value_up,thresh_value_down,grid))
 
 ## Activate python venv before running the app with powershell: .\venv\Scripts\Activate.ps1
 ##To run the app use the command: bokeh serve --show data_app.py
