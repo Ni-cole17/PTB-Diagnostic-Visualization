@@ -1,5 +1,5 @@
 # PTB-Diagnostic-Visualization
-This repository aims to enhance the visualization of recurrence plots from the PTB Diagnostic ECG database.
+This repository aims to enhance the visualization of recurrence plots from the PTB Diagnostic ECG database. This project was develop using Python 3.8.10
 
 # Steps to run app
 ### Clone this repo
