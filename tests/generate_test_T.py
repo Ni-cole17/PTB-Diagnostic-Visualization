@@ -369,6 +369,12 @@ def testing_cluster(matrix_dist,sig,outpath):
     :param sig: sinal a ser utilizado.
     :param outpath: caminho para salvar a imagem.
     '''
+    # Reshape the image to a 2D array of pixels (rows, columns, channels)
+    image = float_to_unint(show_matrix(matrix_dist,return_img=True,show=False))
+    pixels = image.reshape((-1, 3))  # Assuming it's a 3-channel (RGB) image
+
+    # Choose the number of clusters (k)
+    k = 5
     # Ger labels from kmeans
     labels_reshaped = cluster_image_kmeans(matrix_dist, n_clusters=5)
 
