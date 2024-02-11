@@ -331,7 +331,7 @@ def get_T_peaks(T_mask):
     ## Identifying peaks from the sum of the matrix columns
     peaks = []
     first_last = {}
-    limiar = max(sums)*0.85
+    limiar = max(sums)*0.75
     for i in range(T_mask_gray.shape[0]):
         if sum(T_mask_gray[:, i]) > limiar:
             peaks.append(i)
@@ -440,7 +440,7 @@ if __name__ == '__main__':
         ## Get points from start columns from dataframe, there is ten columns
         points = row[3:].dropna().values
         for point in points:
-            out = f'tests/T_wave/T_wave_v4/{patient}-{issue}-{record}-{point}-{point+2000}'
+            out = f'tests/T_wave/T_wave_v5/{patient}-{issue}-{record}-{point}-{point+2000}'
             out_path = f'{out}.png'
             if os.path.exists(out_path):
                 continue
