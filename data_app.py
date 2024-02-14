@@ -5,6 +5,7 @@ from numpy.linalg import norm
 from scipy import signal
 import json
 import pickle
+import time
 from sklearn.decomposition import PCA
 
 from bokeh.plotting import figure, curdoc
@@ -13,6 +14,9 @@ from bokeh.models import ColumnDataSource, PreText, Div, LegendItem, DataRange1d
 from bokeh.layouts import gridplot, column, row
 from bokeh import events
 from bokeh.events import RangesUpdate
+
+## Variable
+SIGNAL_SIZE = 2000
 
 ## Functions
 def filt_bandpass(sig,fs):
@@ -84,9 +88,9 @@ def generate_hist(event):
     ymax, ymin = y_range.start, y_range.end
     
     xmin = max(0, int(xmin))
-    xmax = min(2000, int(xmax))
+    xmax = min(SIGNAL_SIZE, int(xmax))
     ymin = max(0, int(ymin))   
-    ymax = min(2000, int(ymax))
+    ymax = min(SIGNAL_SIZE, int(ymax))
     
     # Update the histogram data based on the current image view
     rounded_signal = np.round(matrix,3)
@@ -118,8 +122,8 @@ def update_spinner_end(attrname, old, new):
     Função que recebe um evento e atualiza o spinner de fim.
     '''
     global spinner_end
-    if spinner_start.value + 2000 <= spinner_start.high:
-        spinner_end = spinner_start.value + 2000
+    if spinner_start.value + SIGNAL_SIZE <= spinner_start.high:
+        spinner_end = spinner_start.value + SIGNAL_SIZE
     else: 
         spinner_end = spinner_start.high
 
@@ -134,10 +138,10 @@ def callback(event):
         y_value = event.x  # Invert y due to plot coordinate system
 
         p11_line = p11.renderers[0] 
-        p11_line.data_source.data = dict(x=matrix[:, int(y_value)],y=list(range(0,2000)))
+        p11_line.data_source.data = dict(x=matrix[:, int(y_value)],y=list(range(0,SIGNAL_SIZE)))
 
         p1_line = p1.renderers[0] 
-        p1_line.data_source.data = dict(x=list(range(0,2000)),y=matrix[int(x_value),:])
+        p1_line.data_source.data = dict(x=list(range(0,SIGNAL_SIZE)),y=matrix[int(x_value),:])
 
 def update_patient(attrname, old, new):
     '''
@@ -167,13 +171,13 @@ def update_signal(attrname, old, new):
     selected_signal = dropdown_exam.value
     filtered = switch3.active
     if spinner_start.value == spinner_end:
-        signals_t = np.zeros((2000,15))
+        signals_t = np.zeros((SIGNAL_SIZE,15))
     elif selected_signal != "None":
         signals_t,_ = read_signal(dropdown_pat.value,selected_signal.replace(".hea",""))
         if filtered == 1:
             signals_t = filt_bandpass(signals_t,1000)
     else:
-        signals_t = np.zeros((2000,15))
+        signals_t = np.zeros((SIGNAL_SIZE,15))
 
 def generate_matrix(attrname, old, new):
     '''
@@ -183,18 +187,19 @@ def generate_matrix(attrname, old, new):
     global matrix
     global spinner_end
 
+    start_time = time.time()
     signals = signals_t[spinner_start.value:spinner_end]
     signal_channel = signals[:, spinner_channel.value]
     source.data = dict(x=np.arange(len(signal_channel)), y=signal_channel)
     matrix = make_matrix(signals)
     #matrix = np.flipud(matrix1)
     hover_tool.callback = CustomJS(code=hover_code, args={'matrix': matrix})
-    if spinner_end - spinner_start.value == 2000 or spinner_end - spinner_start.value == 0: 
+    if spinner_end - spinner_start.value == SIGNAL_SIZE or spinner_end - spinner_start.value == 0: 
         p4.title.text = f"{dropdown_pat.value} | {dropdown_patology.value} | {dropdown_exam.value} | Channel: {spinner_channel.value} | Start: {spinner_start.value} | End: {spinner_end}"
         if spinner_end - spinner_start.value == 0:
-            p4.image(image=[np.zeros((2000,2000))], x=0, y=0, dw=2000, dh=2000, palette="Turbo256")
+            p4.image(image=[np.zeros((SIGNAL_SIZE,SIGNAL_SIZE))], x=0, y=0, dw=SIGNAL_SIZE, dh=SIGNAL_SIZE, palette="Turbo256")
         else:
-            p4.image(image=[matrix], x=0, y=0, dw=2000, dh=2000, palette="Turbo256")
+            p4.image(image=[matrix], x=0, y=0, dw=SIGNAL_SIZE, dh=SIGNAL_SIZE, palette="Turbo256")
 
         p2_line = p2.renderers[0] 
         p2_line.data_source.data = dict(x=np.arange(len(signal_channel)), y=signal_channel)
@@ -204,6 +209,8 @@ def generate_matrix(attrname, old, new):
 
         switch.active = 0
         generate_hist(event=None)
+    end_time = time.time()
+    print(f"Tempo de execução: {end_time - start_time}")
 
 def generate_matrix_thresh(attrname, old, new):
     '''
@@ -216,9 +223,9 @@ def generate_matrix_thresh(attrname, old, new):
         mask = (~mask*255).astype(np.uint8)
 
         p4.title.text = f"{dropdown_pat.value} | {dropdown_patology.value} | {dropdown_exam.value} | Channel: {spinner_channel.value} | Start: {spinner_start.value} | End: {spinner_end}"
-        p4.image(image=[mask], x=0, y=0, dw=2000, dh=2000, palette="Greys256")
+        p4.image(image=[mask], x=0, y=0, dw=SIGNAL_SIZE, dh=SIGNAL_SIZE, palette="Greys256")
     else:
-        p4.image(image=[matrix], x=0, y=0, dw=2000, dh=2000, palette="Turbo256")
+        p4.image(image=[matrix], x=0, y=0, dw=SIGNAL_SIZE, dh=SIGNAL_SIZE, palette="Turbo256")
 
 
 ## MAIN
@@ -276,7 +283,7 @@ switch3 = RadioButtonGroup(labels=LABELS3, active=0)
 ## Reading the signal and creating recurrence plot
 fs = 1000
 signals_t,_ = read_signal(list(data.keys())[0],data[list(data.keys())[0]]["heas"][0].replace(".hea",""))
-signals = signals_t[0:2000]
+signals = signals_t[0:SIGNAL_SIZE]
 signal_channel = signals[:, 0]
 matrix = make_matrix(signals)
 #matrix1 = make_matrix(signals)
@@ -318,7 +325,7 @@ dropdown_exam = Select(title="Selecione o Exame", value=data[selected_patient]["
 
 ## Spinner
 spinner_start = Spinner(title="Selecione o ponto de inicio do sinal:", low=0, high=signals_t.shape[0], step=1, value=0, styles=spinner_style)
-spinner_end = spinner_start.value + 2000# Spinner(title="S o ponto de término do sinal:", low=0, high=signals_t.shape[0], step=1, value=2000)
+spinner_end = spinner_start.value + SIGNAL_SIZE# Spinner(title="S o ponto de término do sinal:", low=0, high=signals_t.shape[0], step=1, value=2000)
 spinner_channel = Spinner(title="Selecione um Canal :", low=0, high=signals_t.shape[1]-1, step=1, value=0, styles=spinner_style)
 thresh_value_down = Spinner(title="Escolha um limiar inferior para o gráfico de recorrência",low=-1, high=20, step=0.01, value = -1, styles=spinner_style)
 thresh_value_up = Spinner(title="Escolha um limiar superior para o gráfico de recorrência",low=0, high=20, step=0.01, value = 0.3, styles=spinner_style)
@@ -360,7 +367,7 @@ p1 = figure(title="Gráfico de distâncias horizontal",width=800, height=400,too
 p11 = figure(title="Gráfico de distâncias vertical",width=400, height=800,tools=tools)
 p2 = figure(title="Sinal na horizontal", width=800, height=300,tools=tools)
 p3 = figure(title="Sinal na vertical", width=300, height=800,tools=tools)
-p4 = figure(title="Matriz de distância", width=800, height=800, x_range=(0, 2000), y_range=(2000,0),tools=tools) 
+p4 = figure(title="Matriz de distância", width=800, height=800, x_range=(0, SIGNAL_SIZE), y_range=(SIGNAL_SIZE,0),tools=tools) 
 p5 = figure(title="Histograma da imagem",width=800, height=300,tools=tools)
 ## Mudanças futuras: Max e min da imagem, localização, e quantiles
 p = PreText(text=f"Valor max: {max_value:.2f}\nValor min: {min_value:.2f}\n\
@@ -368,11 +375,11 @@ p = PreText(text=f"Valor max: {max_value:.2f}\nValor min: {min_value:.2f}\n\
 75%:{quantiles[3]:.2f}\n90%: {quantiles[4]:.2f}",width=200, height=100)
 
 ## Defining figure type for each plot
-p1.line(list(range(0,2000)), np.zeros(2000), line_width=2)
-p11.line(np.zeros(2000),list(range(0,2000)), line_width=2)
+p1.line(list(range(0,SIGNAL_SIZE)), np.zeros(SIGNAL_SIZE), line_width=2)
+p11.line(np.zeros(SIGNAL_SIZE),list(range(0,SIGNAL_SIZE)), line_width=2)
 p2.line(np.arange(len(signal_channel)), signal_channel)
 p3.line(signal_channel, np.arange(len(signal_channel)))
-p4.image(image=[matrix], x=0, y=0, dw=2000, dh=2000,palette="Turbo256")
+p4.image(image=[matrix], x=0, y=0, dw=SIGNAL_SIZE, dh=SIGNAL_SIZE,palette="Turbo256")
 p5.quad(top=hist_values, bottom=0, left=hist_bins[:-1], right=hist_bins[1:], fill_color="navy", line_color="navy")
 quantile_vbars = [p5.vbar(x=quantiles[i], top=max(hist_values), width=0.01, color="red", legend_label=f"Quantile {q*100}%: {quantiles[i]:.2f}") for i, q in enumerate([0.1, 0.25, 0.5, 0.75, 0.9])]
 
