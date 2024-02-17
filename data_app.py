@@ -10,7 +10,7 @@ from sklearn.decomposition import PCA
 
 from bokeh.plotting import figure, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
-from bokeh.models import ColumnDataSource, PreText, Div, LegendItem, DataRange1d,RadioButtonGroup, Spinner, Select, HoverTool, CrosshairTool, CustomJS
+from bokeh.models import ColumnDataSource, PreText, Span, Div, LegendItem, DataRange1d,RadioButtonGroup, Spinner, Select, HoverTool, CrosshairTool, CustomJS
 from bokeh.layouts import gridplot, column, row
 from bokeh import events
 from bokeh.events import RangesUpdate
@@ -331,7 +331,7 @@ thresh_value_down = Spinner(title="Escolha um limiar inferior para o gráfico de
 thresh_value_up = Spinner(title="Escolha um limiar superior para o gráfico de recorrência",low=0, high=20, step=0.01, value = 0.3, styles=spinner_style)
 
 ## Crosshair
-crosshair = CrosshairTool(dimensions='both') 
+#crosshair = CrosshairTool(dimensions='both') 
 
 # Configure callbacks
 dropdown_patology.on_change('value', update_patient)
@@ -388,17 +388,30 @@ p3.y_range.flipped = True
 p3.x_range.flipped = True
 p11.y_range.flipped = True
 p11.x_range.flipped = True
+
+width = Span(dimension="width", line_dash="dashed", line_width=2)
+height = Span(dimension="height", line_dash="dotted", line_width=2)
+
+# Define Crosshair Tool for each plot
+crosshair_p2 = CrosshairTool(overlay=[width, height])
+crosshair_p3 = CrosshairTool(overlay=[width, height])
+crosshair_p4 = CrosshairTool(overlay=[width, height])
+crosshair_p11 = CrosshairTool(overlay=[width, height])
+crosshair_p1 = CrosshairTool(overlay=[width, height])
+
+# Set up Plot Ranges
 p2.x_range = p4.x_range
 p3.y_range = p4.y_range
 
 p11.y_range = p4.y_range
 p1.x_range = p4.x_range
 
-p2.add_tools(crosshair)
-p3.add_tools(crosshair)
-p4.add_tools(crosshair)
-p11.add_tools(crosshair)
-p1.add_tools(crosshair)
+# Add Crosshair Tool to respective Plots
+p2.add_tools(crosshair_p2)
+p3.add_tools(crosshair_p3)
+p4.add_tools(crosshair_p4)
+p11.add_tools(crosshair_p11)
+p1.add_tools(crosshair_p1)
 
 p4.on_event(events.Tap, callback)
 p4.on_event(RangesUpdate, generate_hist)
