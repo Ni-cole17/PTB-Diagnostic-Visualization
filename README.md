@@ -56,4 +56,4 @@ Since plotting longer signals would require a significant amount of RAM and take
 This repository already contains two Jupyter notebooks. One notebook focuses on characterizing ECG signals through distance matrix analysis, while the other is dedicated to visualizing specific details from the database.
 
 # Test
-In development.
+The algorithms used to test the performance of the algorithm are located in the "/tests" folder, with two files, one for tests involving the QRS complex and another for tests involving the T wave.
