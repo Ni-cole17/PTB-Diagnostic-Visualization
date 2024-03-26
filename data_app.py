@@ -7,6 +7,7 @@ import json
 import pickle
 import time
 from sklearn.decomposition import PCA
+import os
 
 from bokeh.plotting import figure, curdoc
 from bokeh.sampledata.autompg import autompg_clean as df
@@ -187,7 +188,6 @@ def generate_matrix(attrname, old, new):
     global matrix
     global spinner_end
 
-    start_time = time.time()
     signals = signals_t[spinner_start.value:spinner_end]
     signal_channel = signals[:, spinner_channel.value]
     source.data = dict(x=np.arange(len(signal_channel)), y=signal_channel)
@@ -209,8 +209,6 @@ def generate_matrix(attrname, old, new):
 
         switch.active = 0
         generate_hist(event=None)
-    end_time = time.time()
-    print(f"Tempo de execução: {end_time - start_time}")
 
 def generate_matrix_thresh(attrname, old, new):
     '''
@@ -261,6 +259,11 @@ div_style = {
 df = pd.read_csv('data/Record_info.csv')
 with open('data/patient_heas.json') as json_file:
     data = json.load(json_file)
+
+directory = "data/ptb-diagnostic-ecg-database-1.0.0"
+directories = [item for item in os.listdir(directory) if os.path.isdir(os.path.join(directory, item))]
+df = df[df['idP'].isin(directories)]
+
 
 ## Texts
 div_form = Div(text="<b>Selecione as opções para gerar a visualização</b>", width=500, height=20,styles=div_style)
