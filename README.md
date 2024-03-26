@@ -50,10 +50,10 @@ In this Bokeh application, you can visualize various plots and analyses for 12 s
 This interactive Bokeh application offers a comprehensive way to analyze and visualize your data, enabling a deeper understanding of your signal and its characteristics.
 
 ### Limitations
-Since plotting longer signals would require a significant amount of RAM and take a considerable amount of time to load, for now, this code is limited to a signal time interval of 2 seconds. However, there may be modifications in the future to accommodate signals shorter than 2 seconds.
+Since plotting longer signals would require a significant amount of RAM and take a considerable amount of time to load, for now, this code is limited to a signal time interval of 2 seconds. However, there may be modifications in the future to accommodate signals longer than 2 seconds.
 
 # Other tools
 This repository already contains two Jupyter notebooks. One notebook focuses on characterizing ECG signals through distance matrix analysis, while the other is dedicated to visualizing specific details from the database.
 
 # Test
-In development.
+The algorithms used to test the performance of the algorithm are located in the "/tests" folder, with two files, one for tests involving the QRS complex and another for tests involving the T wave.
